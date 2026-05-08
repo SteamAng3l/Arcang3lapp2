@@ -10,9 +10,92 @@ import {
   GetVerseStatsResponseItem,
   GetVerseStatsResponse,
 } from "@workspace/api-zod";
-import { detectCategory, categoryMessages, categories } from "../lib/verse-categories";
+import {
+  detectCategory,
+  categoryMessages,
+  categories,
+  extractKeywords,
+  enrichKeywords,
+  scoreVerse,
+  isJudgmentVerse,
+  FEATURED_VERSES,
+} from "../lib/verse-categories";
 
 const router: IRouter = Router();
+
+/**
+ * Finds the most relevant verse for a user's problem text.
+ *
+ * Algorithm:
+ *  1. Detect the emotional category from the user's input (keyword matching).
+ *  2. Fetch ALL verses in that category from the DB.
+ *  3. Exclude judgment/punishment passages (not consoling).
+ *  4. Tokenize + enrich the user's text: extract keywords, add 5-char stems
+ *     and Bible-vocabulary synonyms (bridges modern Spanish ↔ archaic RVR1909).
+ *  5. Score each verse by how many patterns appear in its text.
+ *  6. Return the highest-scoring verse; ties broken randomly for variety.
+ *  7. If ALL scores are 0 (no keyword overlap found), fall back to the
+ *     canonical "featured verse" for that category — a well-known comfort
+ *     verse that is always meaningful regardless of the user's specific words.
+ */
+async function findBestVerse(
+  problem: string,
+  category: string
+): Promise<{ id: number; category: string; verseReference: string; verseText: string } | null> {
+  const allInCategory = await db
+    .select()
+    .from(versesTable)
+    .where(eq(versesTable.category, category));
+
+  if (allInCategory.length === 0) return null;
+
+  // Step 1: exclude judgment/punishment passages
+  const comforting = allInCategory.filter((v) => !isJudgmentVerse(v.verseText));
+
+  // Step 2: build enriched search patterns
+  const keywords = extractKeywords(problem);
+  const patterns = enrichKeywords(keywords);
+
+  // Step 3: score and select
+  const scored = comforting.map((v) => ({
+    ...v,
+    score: scoreVerse(v.verseText, patterns),
+  }));
+
+  const maxScore = Math.max(...scored.map((v) => v.score));
+
+  if (maxScore > 0) {
+    // Pick randomly among all verses tied at the highest score (adds variety)
+    const topGroup = scored.filter((v) => v.score === maxScore);
+    const chosen = topGroup[Math.floor(Math.random() * topGroup.length)];
+    return {
+      id: chosen.id,
+      category: chosen.category,
+      verseReference: chosen.verseReference,
+      verseText: chosen.verseText,
+    };
+  }
+
+  // Step 4: score=0 for all → use the featured "classic" verse for this category
+  const featuredRef = FEATURED_VERSES[category];
+  if (featuredRef) {
+    const featured = comforting.find((v) => v.verseReference === featuredRef);
+    if (featured) {
+      return {
+        id: featured.id,
+        category: featured.category,
+        verseReference: featured.verseReference,
+        verseText: featured.verseText,
+      };
+    }
+  }
+
+  // Last resort: random verse from the comforting subset
+  const rand = comforting[Math.floor(Math.random() * comforting.length)];
+  return rand
+    ? { id: rand.id, category: rand.category, verseReference: rand.verseReference, verseText: rand.verseText }
+    : null;
+}
 
 router.post("/verse", async (req, res): Promise<void> => {
   const parsed = GetVerseBody.safeParse(req.body);
@@ -28,29 +111,22 @@ router.post("/verse", async (req, res): Promise<void> => {
     return;
   }
 
-  const category = detectCategory(problem);
+  const detectedCategory = detectCategory(problem);
+  const verse = await findBestVerse(problem.trim(), detectedCategory);
 
-  const rows = await db
-    .select()
-    .from(versesTable)
-    .where(eq(versesTable.category, category))
-    .orderBy(sql`RANDOM()`)
-    .limit(1);
-
-  if (rows.length === 0) {
-    res.status(404).json({ error: "No se encontró un versículo para esa categoría." });
+  if (!verse) {
+    res.status(404).json({ error: "No se encontró un versículo para esa situación." });
     return;
   }
 
-  const row = rows[0];
-  const message = categoryMessages[category] ?? categoryMessages["esperanza"];
+  const message = categoryMessages[verse.category] ?? categoryMessages["esperanza"];
 
   res.json(
     GetVerseResponse.parse({
-      detected_category: row.category,
+      detected_category: verse.category,
       message,
-      verse_reference: row.verseReference,
-      verse_text: row.verseText,
+      verse_reference: verse.verseReference,
+      verse_text: verse.verseText,
     })
   );
 });
