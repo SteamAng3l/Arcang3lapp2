@@ -6,6 +6,7 @@ import NotFound from "@/pages/not-found";
 import { Layout } from "@/components/layout";
 import Home from "@/pages/home";
 import Categories from "@/pages/categories";
+import Favorites from "@/pages/favorites";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -22,6 +23,7 @@ function Router() {
       <Switch>
         <Route path="/" component={Home} />
         <Route path="/categorias" component={Categories} />
+        <Route path="/favoritos" component={Favorites} />
         <Route component={NotFound} />
       </Switch>
     </Layout>
