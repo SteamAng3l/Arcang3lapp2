@@ -9,10 +9,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
     return (
       <Link href={href}>
         <span
-          className={`cursor-pointer transition-colors hover:text-primary text-xl font-serif px-1 pb-0.5 ${
+          className={`cursor-pointer transition-colors text-xl font-serif px-1 pb-0.5 ${
             active
-              ? "text-primary border-b-2 border-primary/40"
-              : "text-muted-foreground"
+              ? "text-primary border-b-2 border-primary/50 font-semibold"
+              : "text-muted-foreground hover:text-primary"
           }`}
         >
           {label}
@@ -23,7 +23,15 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="min-h-screen flex flex-col max-w-2xl mx-auto px-6 pt-10 pb-6">
+      {/* ── Header ──────────────────────────────────────────────────────── */}
       <header className="mb-14 text-center space-y-4">
+        {/* Decorative cross divider */}
+        <div className="flex items-center justify-center gap-3 mb-2">
+          <div className="h-px w-16 bg-gradient-to-r from-transparent to-primary/30" />
+          <span className="text-primary/40 text-2xl">✝</span>
+          <div className="h-px w-16 bg-gradient-to-l from-transparent to-primary/30" />
+        </div>
+
         <Link href="/" className="inline-block group" data-testid="link-home">
           <h1 className="text-5xl md:text-6xl font-serif text-primary tracking-tight transition-opacity group-hover:opacity-80">
             Arcángel
@@ -44,17 +52,26 @@ export function Layout({ children }: { children: React.ReactNode }) {
         {children}
       </main>
 
-      <footer className="mt-16 pt-6 border-t border-border/40 text-center space-y-5">
+      {/* ── Footer ──────────────────────────────────────────────────────── */}
+      <footer className="mt-16 pt-6 border-t border-border/50 text-center space-y-5">
+        {/* Decorative divider */}
+        <div className="flex items-center justify-center gap-3 mb-4">
+          <div className="h-px w-10 bg-primary/20" />
+          <span className="text-primary/30 text-base">✝</span>
+          <div className="h-px w-10 bg-primary/20" />
+        </div>
+
         <p className="text-muted-foreground font-serif text-lg">
           Versículos de la Reina-Valera 1909 · Dominio público
         </p>
 
-        {/* Botón de donación */}
+        {/* Donation button – gold accent */}
         <a
           href="https://www.buymeacoffee.com/TU_USUARIO"
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 bg-primary/10 hover:bg-primary/20 text-primary font-serif text-lg px-6 py-3 rounded-full transition-colors border border-primary/20"
+          className="inline-flex items-center gap-2 btn-gold font-serif text-lg px-6 py-3 rounded-full transition-colors border"
+          style={{ minHeight: "44px" }}
           aria-label="Apoyar el proyecto con una donación"
         >
           <Heart className="h-5 w-5" />
@@ -64,9 +81,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
           Actualiza el enlace de donación en el código cuando tengas tu cuenta lista.
         </p>
 
-        {/* Espacio reservado para Google AdSense */}
-        {/* Para activar AdSense: reemplaza "ca-pub-XXXXXXXXXXXXXXXX" con tu Publisher ID */}
-        {/* y descomenta el script en index.html */}
+        {/* AdSense placeholder */}
         <div
           id="adsense-banner"
           className="w-full min-h-[60px] flex items-center justify-center rounded-xl border border-dashed border-border/60 text-muted-foreground/40 text-sm"
