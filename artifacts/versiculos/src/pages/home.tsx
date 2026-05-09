@@ -5,8 +5,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { BookOpen, RefreshCw, Send, Heart, HeartOff } from "lucide-react";
-import type { VerseResponse } from "@workspace/api-client-react/src/generated/api.schemas";
+import type { VerseResponse } from "@workspace/api-client-react";
 import { useFavorites } from "@/hooks/use-favorites";
+import { VerseShareButtons } from "@/components/verse-share-buttons";
 
 export default function Home() {
   const [problem, setProblem] = useState("");
@@ -146,32 +147,35 @@ export default function Home() {
               >
                 "{activeVerse.verse_text}"
               </p>
-              <div className="mt-8 pt-8 border-t border-border/50 flex flex-col sm:flex-row items-center justify-center gap-5">
-                <span
-                  className="font-serif text-2xl text-primary font-medium"
-                  data-testid="text-verse-reference"
-                >
-                  {activeVerse.verse_reference}
-                </span>
-                <Button
-                  variant={saved ? "default" : "outline"}
-                  size="lg"
-                  onClick={toggleFavorite}
-                  className="rounded-full h-12 px-7 text-lg font-serif gap-2"
-                  data-testid="button-save-favorite"
-                >
-                  {saved ? (
-                    <>
-                      <HeartOff className="h-5 w-5" />
-                      Guardado
-                    </>
-                  ) : (
-                    <>
-                      <Heart className="h-5 w-5" />
-                      Guardar en favoritos
-                    </>
-                  )}
-                </Button>
+              <div className="mt-8 pt-8 border-t border-border/50 flex flex-col items-center gap-6">
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-5 w-full">
+                  <span
+                    className="font-serif text-2xl text-primary font-medium"
+                    data-testid="text-verse-reference"
+                  >
+                    {activeVerse.verse_reference}
+                  </span>
+                  <Button
+                    variant={saved ? "default" : "outline"}
+                    size="lg"
+                    onClick={toggleFavorite}
+                    className="rounded-full h-12 px-7 text-lg font-serif gap-2"
+                    data-testid="button-save-favorite"
+                  >
+                    {saved ? (
+                      <>
+                        <HeartOff className="h-5 w-5" />
+                        Guardado
+                      </>
+                    ) : (
+                      <>
+                        <Heart className="h-5 w-5" />
+                        Guardar en favoritos
+                      </>
+                    )}
+                  </Button>
+                </div>
+                <VerseShareButtons verse={activeVerse} />
               </div>
             </CardContent>
           </Card>
