@@ -29,7 +29,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
             Arcángel
           </h1>
         </Link>
-        <p className="text-muted-foreground font-serif italic text-xl max-w-md mx-auto text-center">Guía y Mensajero</p>
+        <p className="text-muted-foreground font-serif italic text-xl max-w-md mx-auto">
+          Guía espiritual de la Palabra
+        </p>
 
         <nav className="flex justify-center gap-8 mt-8 flex-wrap" aria-label="Navegación principal">
           {navLink("/", "Inicio")}
@@ -37,9 +39,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
           {navLink("/favoritos", "Mis Favoritos")}
         </nav>
       </header>
+
       <main className="flex-1 flex flex-col">
         {children}
       </main>
+
       <footer className="mt-16 pt-6 border-t border-border/40 text-center space-y-5">
         <p className="text-muted-foreground font-serif text-lg">
           Versículos de la Reina-Valera 1909 · Dominio público
