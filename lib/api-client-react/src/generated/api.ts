@@ -20,6 +20,7 @@ import type {
   Category,
   CategoryStat,
   ErrorResponse,
+  GetRandomVerseParams,
   HealthStatus,
   VerseRequest,
   VerseResponse,
@@ -274,44 +275,60 @@ export function useGetCategories<
 }
 
 /**
- * Returns a random biblical verse from any category.
+ * Returns a random biblical verse from any category, optionally excluding already-seen verse IDs.
  * @summary Get a random verse
  */
-export const getGetRandomVerseUrl = () => {
-  return `/api/verse/random`;
+export const getGetRandomVerseUrl = (params?: GetRandomVerseParams) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? "null" : value.toString());
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0
+    ? `/api/verse/random?${stringifiedParams}`
+    : `/api/verse/random`;
 };
 
 export const getRandomVerse = async (
+  params?: GetRandomVerseParams,
   options?: RequestInit,
 ): Promise<VerseResponse> => {
-  return customFetch<VerseResponse>(getGetRandomVerseUrl(), {
+  return customFetch<VerseResponse>(getGetRandomVerseUrl(params), {
     ...options,
     method: "GET",
   });
 };
 
-export const getGetRandomVerseQueryKey = () => {
-  return [`/api/verse/random`] as const;
+export const getGetRandomVerseQueryKey = (params?: GetRandomVerseParams) => {
+  return [`/api/verse/random`, ...(params ? [params] : [])] as const;
 };
 
 export const getGetRandomVerseQueryOptions = <
   TData = Awaited<ReturnType<typeof getRandomVerse>>,
   TError = ErrorType<unknown>,
->(options?: {
-  query?: UseQueryOptions<
-    Awaited<ReturnType<typeof getRandomVerse>>,
-    TError,
-    TData
-  >;
-  request?: SecondParameter<typeof customFetch>;
-}) => {
+>(
+  params?: GetRandomVerseParams,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof getRandomVerse>>,
+      TError,
+      TData
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey = queryOptions?.queryKey ?? getGetRandomVerseQueryKey();
+  const queryKey = queryOptions?.queryKey ?? getGetRandomVerseQueryKey(params);
 
   const queryFn: QueryFunction<Awaited<ReturnType<typeof getRandomVerse>>> = ({
     signal,
-  }) => getRandomVerse({ signal, ...requestOptions });
+  }) => getRandomVerse(params, { signal, ...requestOptions });
 
   return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
     Awaited<ReturnType<typeof getRandomVerse>>,
@@ -332,15 +349,18 @@ export type GetRandomVerseQueryError = ErrorType<unknown>;
 export function useGetRandomVerse<
   TData = Awaited<ReturnType<typeof getRandomVerse>>,
   TError = ErrorType<unknown>,
->(options?: {
-  query?: UseQueryOptions<
-    Awaited<ReturnType<typeof getRandomVerse>>,
-    TError,
-    TData
-  >;
-  request?: SecondParameter<typeof customFetch>;
-}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getGetRandomVerseQueryOptions(options);
+>(
+  params?: GetRandomVerseParams,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof getRandomVerse>>,
+      TError,
+      TData
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetRandomVerseQueryOptions(params, options);
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
     queryKey: QueryKey;

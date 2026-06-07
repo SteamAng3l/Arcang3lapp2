@@ -12,6 +12,8 @@ export interface HealthStatus {
 export interface VerseRequest {
   /** The user's problem or feeling described in text */
   problem: string;
+  /** Optional list of verse IDs already shown (for no-repeat logic) */
+  excluded_ids?: number[];
 }
 
 export interface VerseResponse {
@@ -19,10 +21,12 @@ export interface VerseResponse {
   detected_category: string;
   /** A brief supportive message related to the category */
   message: string;
-  /** The biblical reference (e.g. "Filipenses 4:6-7") */
+  /** The biblical reference (e.g. "Filipenses 4:6") */
   verse_reference: string;
   /** The full verse text */
   verse_text: string;
+  /** The database ID of the returned verse */
+  verse_id: number;
 }
 
 export interface Category {
@@ -39,3 +43,10 @@ export interface CategoryStat {
 export interface ErrorResponse {
   error: string;
 }
+
+export type GetRandomVerseParams = {
+  /**
+   * Comma-separated list of verse IDs to exclude (already shown)
+   */
+  excluded_ids?: string;
+};

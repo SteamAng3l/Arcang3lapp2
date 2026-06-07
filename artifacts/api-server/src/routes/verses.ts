@@ -1,5 +1,5 @@
 import { Router, type IRouter } from "express";
-import { sql, eq } from "drizzle-orm";
+import { sql, eq, notInArray } from "drizzle-orm";
 import { db, versesTable } from "@workspace/db";
 import {
   GetVerseBody,
@@ -25,39 +25,40 @@ const router: IRouter = Router();
 
 /**
  * Finds the most relevant verse for a user's problem text.
- *
- * Algorithm:
- *  1. Detect the emotional category from the user's input (keyword matching).
- *  2. Fetch ALL verses in that category from the DB.
- *  3. Exclude judgment/punishment passages (not consoling).
- *  4. Tokenize + enrich the user's text: extract keywords, add 5-char stems
- *     and Bible-vocabulary synonyms (bridges modern Spanish ↔ archaic RVR1909).
- *  5. Score each verse by how many patterns appear in its text.
- *  6. Return the highest-scoring verse; ties broken randomly for variety.
- *  7. If ALL scores are 0 (no keyword overlap found), fall back to the
- *     canonical "featured verse" for that category — a well-known comfort
- *     verse that is always meaningful regardless of the user's specific words.
+ * Supports excluded_ids to implement no-repeat logic.
  */
 async function findBestVerse(
   problem: string,
-  category: string
+  category: string,
+  excludedIds: number[] = []
 ): Promise<{ id: number; category: string; verseReference: string; verseText: string } | null> {
-  const allInCategory = await db
+  let allInCategory = await db
     .select()
     .from(versesTable)
     .where(eq(versesTable.category, category));
 
   if (allInCategory.length === 0) return null;
 
-  // Step 1: exclude judgment/punishment passages
-  const comforting = allInCategory.filter((v) => !isJudgmentVerse(v.verseText));
+  // Apply no-repeat filter — if all are excluded, reset and use all
+  let pool = excludedIds.length > 0
+    ? allInCategory.filter((v) => !excludedIds.includes(v.id))
+    : allInCategory;
 
-  // Step 2: build enriched search patterns
+  if (pool.length === 0) {
+    // All verses in this category have been shown → reset
+    pool = allInCategory;
+  }
+
+  // Exclude judgment/punishment passages
+  const comforting = pool.filter((v) => !isJudgmentVerse(v.verseText));
+  const safePool = comforting.length > 0 ? comforting : pool;
+
+  // Build enriched search patterns
   const keywords = extractKeywords(problem);
   const patterns = enrichKeywords(keywords);
 
-  // Step 3: score and select
-  const scored = comforting.map((v) => ({
+  // Score and select
+  const scored = safePool.map((v) => ({
     ...v,
     score: scoreVerse(v.verseText, patterns),
   }));
@@ -65,7 +66,6 @@ async function findBestVerse(
   const maxScore = Math.max(...scored.map((v) => v.score));
 
   if (maxScore > 0) {
-    // Pick randomly among all verses tied at the highest score (adds variety)
     const topGroup = scored.filter((v) => v.score === maxScore);
     const chosen = topGroup[Math.floor(Math.random() * topGroup.length)];
     return {
@@ -76,10 +76,13 @@ async function findBestVerse(
     };
   }
 
-  // Step 4: score=0 for all → use the featured "classic" verse for this category
+  // score=0 for all → use the featured "classic" verse for this category
   const featuredRef = FEATURED_VERSES[category];
   if (featuredRef) {
-    const featured = comforting.find((v) => v.verseReference === featuredRef);
+    // First try to find featured in the filtered pool
+    const featured =
+      safePool.find((v) => v.verseReference === featuredRef) ??
+      allInCategory.find((v) => v.verseReference === featuredRef);
     if (featured) {
       return {
         id: featured.id,
@@ -90,8 +93,8 @@ async function findBestVerse(
     }
   }
 
-  // Last resort: random verse from the comforting subset
-  const rand = comforting[Math.floor(Math.random() * comforting.length)];
+  // Last resort: random from safe pool
+  const rand = safePool[Math.floor(Math.random() * safePool.length)];
   return rand
     ? { id: rand.id, category: rand.category, verseReference: rand.verseReference, verseText: rand.verseText }
     : null;
@@ -104,7 +107,7 @@ router.post("/verse", async (req, res): Promise<void> => {
     return;
   }
 
-  const { problem } = parsed.data;
+  const { problem, excluded_ids } = parsed.data;
 
   if (!problem || problem.trim() === "") {
     res.status(400).json({ error: "Por favor escribe un problema o situación." });
@@ -112,7 +115,8 @@ router.post("/verse", async (req, res): Promise<void> => {
   }
 
   const detectedCategory = detectCategory(problem);
-  const verse = await findBestVerse(problem.trim(), detectedCategory);
+  const excludedIds = (excluded_ids ?? []).map(Number).filter((n) => !isNaN(n));
+  const verse = await findBestVerse(problem.trim(), detectedCategory, excludedIds);
 
   if (!verse) {
     res.status(404).json({ error: "No se encontró un versículo para esa situación." });
@@ -127,6 +131,7 @@ router.post("/verse", async (req, res): Promise<void> => {
       message,
       verse_reference: verse.verseReference,
       verse_text: verse.verseText,
+      verse_id: verse.id,
     })
   );
 });
@@ -153,12 +158,38 @@ router.get("/categories", async (req, res): Promise<void> => {
   res.json(GetCategoriesResponse.parse(result));
 });
 
-router.get("/verse/random", async (_req, res): Promise<void> => {
-  const rows = await db
-    .select()
-    .from(versesTable)
-    .orderBy(sql`RANDOM()`)
-    .limit(1);
+router.get("/verse/random", async (req, res): Promise<void> => {
+  // Parse excluded_ids from comma-separated query string: ?excluded_ids=1,2,3
+  const rawExcluded = typeof req.query.excluded_ids === "string" ? req.query.excluded_ids : "";
+  const excludedIds = rawExcluded
+    .split(",")
+    .map((s) => parseInt(s.trim(), 10))
+    .filter((n) => !isNaN(n) && n > 0);
+
+  let rows;
+  if (excludedIds.length > 0) {
+    rows = await db
+      .select()
+      .from(versesTable)
+      .where(notInArray(versesTable.id, excludedIds))
+      .orderBy(sql`RANDOM()`)
+      .limit(1);
+
+    // If all verses are excluded, reset and pick any
+    if (rows.length === 0) {
+      rows = await db
+        .select()
+        .from(versesTable)
+        .orderBy(sql`RANDOM()`)
+        .limit(1);
+    }
+  } else {
+    rows = await db
+      .select()
+      .from(versesTable)
+      .orderBy(sql`RANDOM()`)
+      .limit(1);
+  }
 
   if (rows.length === 0) {
     res.status(404).json({ error: "No se encontraron versículos." });
@@ -174,6 +205,7 @@ router.get("/verse/random", async (_req, res): Promise<void> => {
       message,
       verse_reference: row.verseReference,
       verse_text: row.verseText,
+      verse_id: row.id,
     })
   );
 });

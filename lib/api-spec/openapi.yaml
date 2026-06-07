@@ -86,7 +86,14 @@ paths:
       operationId: getRandomVerse
       tags: [verses]
       summary: Get a random verse
-      description: Returns a random biblical verse from any category.
+      description: Returns a random biblical verse from any category, optionally excluding already-seen verse IDs.
+      parameters:
+        - name: excluded_ids
+          in: query
+          required: false
+          description: Comma-separated list of verse IDs to exclude (already shown)
+          schema:
+            type: string
       responses:
         "200":
           description: A random biblical verse
@@ -127,6 +134,11 @@ components:
         problem:
           type: string
           description: The user's problem or feeling described in text
+        excluded_ids:
+          type: array
+          items:
+            type: integer
+          description: Optional list of verse IDs already shown (for no-repeat logic)
       required:
         - problem
 
@@ -141,15 +153,19 @@ components:
           description: A brief supportive message related to the category
         verse_reference:
           type: string
-          description: The biblical reference (e.g. "Filipenses 4:6-7")
+          description: The biblical reference (e.g. "Filipenses 4:6")
         verse_text:
           type: string
           description: The full verse text
+        verse_id:
+          type: integer
+          description: The database ID of the returned verse
       required:
         - detected_category
         - message
         - verse_reference
         - verse_text
+        - verse_id
 
     Category:
       type: object

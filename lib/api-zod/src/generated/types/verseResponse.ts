@@ -11,8 +11,10 @@ export interface VerseResponse {
   detected_category: string;
   /** A brief supportive message related to the category */
   message: string;
-  /** The biblical reference (e.g. "Filipenses 4:6-7") */
+  /** The biblical reference (e.g. "Filipenses 4:6") */
   verse_reference: string;
   /** The full verse text */
   verse_text: string;
+  /** The database ID of the returned verse */
+  verse_id: number;
 }

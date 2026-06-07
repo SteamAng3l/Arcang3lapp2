@@ -13,6 +13,7 @@ import type { VerseResponse } from "@workspace/api-client-react";
 import { RefreshCw, Heart, HeartOff } from "lucide-react";
 import { useFavorites } from "@/hooks/use-favorites";
 import { VerseShareButtons } from "@/components/verse-share-buttons";
+import { getHistory, addToHistory } from "@/hooks/use-verse-history";
 
 export default function Categories() {
   const { data: categories, isLoading: isLoadingCategories } = useGetCategories({
@@ -33,14 +34,29 @@ export default function Categories() {
   const getVerseMutation = useGetVerse();
   const [activeVerse, setActiveVerse] = useState<VerseResponse | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [activeCategory, setActiveCategory] = useState<string>("");
   const { addFavorite, removeFavorite, isFavorite } = useFavorites();
 
-  const handleCategoryClick = (categoryLabel: string) => {
+  const handleCategoryClick = (categorySlug: string, categoryLabel: string) => {
     setActiveVerse(null);
+    setActiveCategory(categorySlug);
     setDialogOpen(true);
+
+    const excludedIds = getHistory(categorySlug);
+
     getVerseMutation.mutate(
-      { data: { problem: categoryLabel } },
-      { onSuccess: (data) => setActiveVerse(data) }
+      {
+        data: {
+          problem: categoryLabel,
+          excluded_ids: excludedIds.length > 0 ? excludedIds : undefined,
+        },
+      },
+      {
+        onSuccess: (data) => {
+          setActiveVerse(data);
+          addToHistory(data.detected_category, data.verse_id);
+        },
+      }
     );
   };
 
@@ -78,7 +94,7 @@ export default function Categories() {
           {categories?.map((cat) => (
             <button
               key={cat.category}
-              onClick={() => handleCategoryClick(cat.label)}
+              onClick={() => handleCategoryClick(cat.category, cat.label)}
               className="text-left group relative overflow-hidden bg-card hover:bg-primary/5 border border-border/50 hover:border-primary/30 rounded-2xl p-7 transition-all duration-300 hover:shadow-sm"
               data-testid={`button-category-${cat.category}`}
             >

@@ -9,6 +9,7 @@
 export * from "./category";
 export * from "./categoryStat";
 export * from "./errorResponse";
+export * from "./getRandomVerseParams";
 export * from "./healthStatus";
 export * from "./verseRequest";
 export * from "./verseResponse";

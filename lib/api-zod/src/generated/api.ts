@@ -23,6 +23,10 @@ export const GetVerseBody = zod.object({
   problem: zod
     .string()
     .describe("The user's problem or feeling described in text"),
+  excluded_ids: zod
+    .array(zod.number())
+    .optional()
+    .describe("Optional list of verse IDs already shown (for no-repeat logic)"),
 });
 
 export const GetVerseResponse = zod.object({
@@ -32,8 +36,9 @@ export const GetVerseResponse = zod.object({
     .describe("A brief supportive message related to the category"),
   verse_reference: zod
     .string()
-    .describe('The biblical reference (e.g. \"Filipenses 4:6-7\")'),
+    .describe('The biblical reference (e.g. \"Filipenses 4:6\")'),
   verse_text: zod.string().describe("The full verse text"),
+  verse_id: zod.number().describe("The database ID of the returned verse"),
 });
 
 /**
@@ -48,9 +53,16 @@ export const GetCategoriesResponseItem = zod.object({
 export const GetCategoriesResponse = zod.array(GetCategoriesResponseItem);
 
 /**
- * Returns a random biblical verse from any category.
+ * Returns a random biblical verse from any category, optionally excluding already-seen verse IDs.
  * @summary Get a random verse
  */
+export const GetRandomVerseQueryParams = zod.object({
+  excluded_ids: zod.coerce
+    .string()
+    .optional()
+    .describe("Comma-separated list of verse IDs to exclude (already shown)"),
+});
+
 export const GetRandomVerseResponse = zod.object({
   detected_category: zod.string().describe("The detected emotional category"),
   message: zod
@@ -58,8 +70,9 @@ export const GetRandomVerseResponse = zod.object({
     .describe("A brief supportive message related to the category"),
   verse_reference: zod
     .string()
-    .describe('The biblical reference (e.g. \"Filipenses 4:6-7\")'),
+    .describe('The biblical reference (e.g. \"Filipenses 4:6\")'),
   verse_text: zod.string().describe("The full verse text"),
+  verse_id: zod.number().describe("The database ID of the returned verse"),
 });
 
 /**

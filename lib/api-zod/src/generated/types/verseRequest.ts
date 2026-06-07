@@ -9,4 +9,6 @@
 export interface VerseRequest {
   /** The user's problem or feeling described in text */
   problem: string;
+  /** Optional list of verse IDs already shown (for no-repeat logic) */
+  excluded_ids?: number[];
 }
