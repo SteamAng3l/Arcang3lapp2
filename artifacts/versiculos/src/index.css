@@ -60,11 +60,11 @@
   --elevate-2: rgba(0,0,0, .08);
 
   --background: 40 40% 96%;
-  --foreground: 24 33% 18%;
+  --foreground: 66 44% 22%;
   --border: 40 46% 81%;
   
   --card: 40 40% 93%;
-  --card-foreground: 24 33% 18%;
+  --card-foreground: 66 44% 22%;
   --card-border: 40 46% 81%;
 
   --sidebar: 40 40% 93%;
@@ -80,7 +80,7 @@
   --popover-foreground: 24 33% 18%;
   --popover-border: 40 46% 81%;
 
-  --primary: 30 52% 54%;
+  --primary: 43 89% 29%;
   --primary-foreground: 40 40% 96%;
   
   --secondary: 40 46% 81%;
@@ -199,11 +199,14 @@
     min-height: 44px;
   }
   .bg-card {
-    background-color: rgba(255, 255, 255, 0.78) !important;
+    background-color: rgba(255, 255, 255, 0.6) !important;
     backdrop-filter: blur(5px);
   }
   .bg-background {
-    background-color: rgba(255, 255, 255, 0.72) !important;
+    background-color: rgba(255, 255, 255, 0.6) !important;
     backdrop-filter: blur(4px);
+  }
+  p, span, li {
+    text-shadow: 0px 0px 3px rgba(255, 255, 255, 0.8);
   }
 }
