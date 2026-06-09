@@ -8,7 +8,7 @@ import { BookOpen, RefreshCw, Send, Heart, HeartOff } from "lucide-react";
 import type { VerseResponse } from "@workspace/api-client-react";
 import { useFavorites } from "@/hooks/use-favorites";
 import { VerseShareButtons } from "@/components/verse-share-buttons";
-import { getHistory, addToHistory } from "@/hooks/use-verse-history";
+import { getHistory, addToHistory, getAllHistory } from "@/hooks/use-verse-history";
 
 export default function Home() {
   const [problem, setProblem] = useState("");
@@ -24,12 +24,12 @@ export default function Home() {
     setActiveVerse(null);
 
     // We don't know the category yet — will track after response
+    const excluded = getAllHistory();
     getVerseMutation.mutate(
-      { data: { problem: problem.trim() } },
+      { data: { problem: problem.trim(), excluded_ids: excluded.length ? excluded : undefined } },
       {
         onSuccess: (data) => {
           setActiveVerse(data);
-          // Track this verse in the category history
           addToHistory(data.detected_category, data.verse_id);
         },
       }
