@@ -199,14 +199,16 @@
     min-height: 44px;
   }
   .bg-card {
-    background-color: rgba(255, 255, 255, 0.6) !important;
+    background-color: rgba(255, 255, 255, 0.21) !important;
     backdrop-filter: blur(5px);
   }
   .bg-background {
-    background-color: rgba(255, 255, 255, 0.6) !important;
-    backdrop-filter: blur(4px);
+    background-color: rgba(255, 255, 255, 0.21) !important;
+    backdrop-filter: blur(5px);
   }
+  h1, h2, h3, h4, h5, h6 { font-weight: 700; }
   p, span, li {
+    font-weight: 600;
     text-shadow: 0px 0px 3px rgba(255, 255, 255, 0.8);
   }
 }
