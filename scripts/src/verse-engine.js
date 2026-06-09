@@ -1,224 +1,600 @@
+// scripts/src/verse-engine.js
+// 40 categorías - 30 versículos por categoría - RVR 1909 (dominio público)
+
 const db = {
-  categorias: ["Ansiedad","Miedo","Tristeza","Soledad","Perdón","Esperanza","Fortaleza","Sabiduría","Amor","Fe","Paciencia","Gratitud","Alegría","Confianza","Perseverancia","Salud","Protección","Paz","Humildad","Obediencia","Justicia","Salvación","Oración","Disciplina","Bondad","Misericordia","Renovación","Fortaleza espiritual","Luz","Verdad","Libertad","Gozo","Compasión","Esperanza en tiempos difíciles","Redención","Santidad","Servicio","Unidad","Perdón y reconciliación","Confianza en Dios"],
+  categorias: [
+    "Ansiedad",
+    "Miedo",
+    "Tristeza",
+    "Soledad",
+    "Perdón",
+    "Esperanza",
+    "Fortaleza",
+    "Sabiduría",
+    "Amor",
+    "Fe",
+    "Paciencia",
+    "Gratitud",
+    "Alegría",
+    "Confianza",
+    "Perseverancia",
+    "Salud",
+    "Protección",
+    "Paz",
+    "Humildad",
+    "Obediencia",
+    "Justicia",
+    "Salvación",
+    "Oración",
+    "Disciplina",
+    "Bondad",
+    "Misericordia",
+    "Renovación",
+    "Fortaleza espiritual",
+    "Luz",
+    "Verdad",
+    "Libertad",
+    "Gozo",
+    "Compasión",
+    "Esperanza en tiempos difíciles",
+    "Redención",
+    "Santidad",
+    "Servicio",
+    "Unidad",
+    "Perdón y reconciliación",
+    "Confianza en Dios",
+  ],
   versiculos: [
-    {id:1,texto:"No os afanéis por ninguna cosa; sino sean conocidas vuestras peticiones delante de Dios en toda oración y ruego.",categoria:"Ansiedad"},
-    {id:2,texto:"Echad toda vuestra ansiedad sobre él, porque él tiene cuidado de vosotros.",categoria:"Ansiedad"},
-    {id:3,texto:"No os inquietéis; el que comenzó en vosotros la buena obra, la perfeccionará.",categoria:"Ansiedad"},
-    {id:4,texto:"Tú guardarás en completa paz á aquel cuyo pensamiento en ti persevera; porque en ti ha confiado.",categoria:"Ansiedad"},
-    {id:5,texto:"El gozo de Jehová es vuestra fortaleza.",categoria:"Ansiedad"},
-    {id:6,texto:"No temas, porque yo soy contigo; no desmayes, porque yo soy tu Dios que te esfuerzo.",categoria:"Miedo"},
-    {id:7,texto:"Jehová es mi luz y mi salvación: ¿de quién temeré?",categoria:"Miedo"},
-    {id:8,texto:"El ángel de Jehová acampa alrededor de los que le temen, y los defiende.",categoria:"Miedo"},
-    {id:9,texto:"No temas, porque yo te redimí; te puse nombre, mío eres tú.",categoria:"Miedo"},
-    {id:10,texto:"Dios es nuestro amparo y fortaleza, nuestro pronto auxilio en las tribulaciones.",categoria:"Miedo"},
-    {id:11,texto:"Cercano está Jehová á los quebrantados de corazón.",categoria:"Tristeza"},
-    {id:12,texto:"El lloro puede durar una noche, mas la alegría viene en la mañana.",categoria:"Tristeza"},
-    {id:13,texto:"Jehová sanará tus quebrantos y curará tus heridas.",categoria:"Tristeza"},
-    {id:14,texto:"Los que sembraron con lágrimas, con regocijo segarán.",categoria:"Tristeza"},
-    {id:15,texto:"Él enjugará toda lágrima de los ojos de ellos.",categoria:"Tristeza"},
-    {id:16,texto:"No te desampararé, ni te dejaré.",categoria:"Soledad"},
-    {id:17,texto:"He aquí, yo estoy con vosotros todos los días, hasta el fin del mundo.",categoria:"Soledad"},
-    {id:18,texto:"Aunque mi padre y mi madre me dejaran, con todo, Jehová me recogerá.",categoria:"Soledad"},
-    {id:19,texto:"Yo nunca me olvidaré de ti.",categoria:"Soledad"},
-    {id:20,texto:"Y en ti confiarán los que conocen tu nombre; por cuanto no desamparaste á los que te buscaron.",categoria:"Soledad"},
-    {id:21,texto:"Si confesamos nuestros pecados, él es fiel y justo para perdonar nuestros pecados.",categoria:"Perdón"},
-    {id:22,texto:"Cuanto está lejos el oriente del occidente, hizo alejar de nosotros nuestras rebeliones.",categoria:"Perdón"},
-    {id:23,texto:"Yo desvanecí como nube tus transgresiones, y como niebla tus pecados.",categoria:"Perdón"},
-    {id:24,texto:"¿Qué Dios como tú, que perdona la maldad? No retuvo para siempre su ira, porque se deleita en misericordia.",categoria:"Perdón"},
-    {id:25,texto:"Venid luego, y estemos á cuenta, dice Jehová: si vuestros pecados fueren como la grana, como la nieve serán emblanquecidos.",categoria:"Perdón"},
-    {id:26,texto:"Porque yo sé los pensamientos que tengo acerca de vosotros, dice Jehová, pensamientos de paz y no de mal.",categoria:"Esperanza"},
-    {id:27,texto:"Los que esperan á Jehová tendrán nuevas fuerzas; levantarán alas como las águilas.",categoria:"Esperanza"},
-    {id:28,texto:"Y el Dios de esperanza os llene de todo gozo y paz en el creer.",categoria:"Esperanza"},
-    {id:29,texto:"Porque para el hombre que agrada á Dios, Él le da sabiduría, y ciencia, y alegría.",categoria:"Esperanza"},
-    {id:30,texto:"Mas la senda de los justos es como la luz de la aurora, que va en aumento hasta que el día es perfecto.",categoria:"Esperanza"},
-    {id:31,texto:"Todo lo puedo en Cristo que me fortalece.",categoria:"Fortaleza"},
-    {id:32,texto:"No te desampararé ni te dejaré; esfuérzate y sé muy valiente.",categoria:"Fortaleza"},
-    {id:33,texto:"Mi carne y mi corazón desfallecen: mas la roca de mi corazón y mi porción es Dios para siempre.",categoria:"Fortaleza"},
-    {id:34,texto:"Fortaléceos en el Señor, y en el poder de su fuerza.",categoria:"Fortaleza"},
-    {id:35,texto:"El da esfuerzo al cansado, y multiplica las fuerzas al que no tiene ningunas.",categoria:"Fortaleza"},
-    {id:36,texto:"Confía en Jehová de todo tu corazón, y no te apoyes en tu propia prudencia.",categoria:"Sabiduría"},
-    {id:37,texto:"Si alguno de vosotros tiene falta de sabiduría, pídala á Dios, el cual da á todos abundantemente.",categoria:"Sabiduría"},
-    {id:38,texto:"El principio de la sabiduría es el temor de Jehová.",categoria:"Sabiduría"},
-    {id:39,texto:"Encomienda á Jehová tu camino, y espera en él; y él hará.",categoria:"Sabiduría"},
-    {id:40,texto:"Te haré entender, y te enseñaré el camino en que debes andar.",categoria:"Sabiduría"},
-    {id:41,texto:"Porque de tal manera amó Dios al mundo, que ha dado á su Hijo unigénito.",categoria:"Amor"},
-    {id:42,texto:"El que no ama, no conoce á Dios; porque Dios es amor.",categoria:"Amor"},
-    {id:43,texto:"Nada nos podrá separar del amor de Dios, que es en Cristo Jesús Señor nuestro.",categoria:"Amor"},
-    {id:44,texto:"Nadie tiene mayor amor que éste, que ponga alguno su vida por sus amigos.",categoria:"Amor"},
-    {id:45,texto:"La caridad es sufrida, es benigna; la caridad no tiene envidia.",categoria:"Amor"},
-    {id:46,texto:"Es pues la fe la certeza de lo que se espera, la demostración de lo que no se ve.",categoria:"Fe"},
-    {id:47,texto:"Al que cree todo le es posible.",categoria:"Fe"},
-    {id:48,texto:"Sin fe es imposible agradar á Dios.",categoria:"Fe"},
-    {id:49,texto:"La fe es por el oír, y el oír, por la palabra de Dios.",categoria:"Fe"},
-    {id:50,texto:"Tened fe en Dios.",categoria:"Fe"},
-    {id:51,texto:"Bueno es esperar en silencio la salud de Jehová.",categoria:"Paciencia"},
-    {id:52,texto:"La tribulación obra la paciencia; y la paciencia, la prueba; y la prueba, la esperanza.",categoria:"Paciencia"},
-    {id:53,texto:"Os es necesaria la paciencia; para que, habiendo hecho la voluntad de Dios, obtengáis la promesa.",categoria:"Paciencia"},
-    {id:54,texto:"Guarda silencio ante Jehová, y espérale.",categoria:"Paciencia"},
-    {id:55,texto:"El Señor es muy misericordioso y piadoso.",categoria:"Paciencia"},
-    {id:56,texto:"Dad gracias en todo: porque esta es la voluntad de Dios para con vosotros.",categoria:"Gratitud"},
-    {id:57,texto:"Entrad por sus puertas con alabanza, por sus atrios con alabanza.",categoria:"Gratitud"},
-    {id:58,texto:"Alabad á Jehová, porque él es bueno; porque para siempre es su misericordia.",categoria:"Gratitud"},
-    {id:59,texto:"El que sacrifica alabanza me honrará.",categoria:"Gratitud"},
-    {id:60,texto:"Dando siempre gracias por todo al Dios y Padre.",categoria:"Gratitud"},
-    {id:61,texto:"El gozo de Jehová es vuestra fortaleza.",categoria:"Alegría"},
-    {id:62,texto:"En tu presencia hay hartura de gozos; á tu diestra hay deleites para siempre.",categoria:"Alegría"},
-    {id:63,texto:"Grandes cosas ha hecho Jehová con nosotros; estaremos alegres.",categoria:"Alegría"},
-    {id:64,texto:"Mi gozo esté en vosotros, y vuestro gozo sea cumplido.",categoria:"Alegría"},
-    {id:65,texto:"Alegraos en el Señor siempre: otra vez digo que os alegréis.",categoria:"Alegría"},
-    {id:66,texto:"Confía en Jehová de todo tu corazón, y no te apoyes en tu propia prudencia.",categoria:"Confianza"},
-    {id:67,texto:"Jehová es mi luz y mi salvación: ¿de quién temeré?",categoria:"Confianza"},
-    {id:68,texto:"Bendito el varón que confía en Jehová, y cuya confianza es Jehová.",categoria:"Confianza"},
-    {id:69,texto:"Esperad en él en todo tiempo; derramad delante de él vuestro corazón: Dios es nuestro refugio.",categoria:"Confianza"},
-    {id:70,texto:"En Dios he confiado, no temeré: ¿Qué puede hacerme el hombre?",categoria:"Confianza"},
-    {id:71,texto:"Y no nos cansemos de hacer bien; porque á su tiempo segaremos, si no desmayáremos.",categoria:"Perseverancia"},
-    {id:72,texto:"Corramos con paciencia la carrera que tenemos por delante.",categoria:"Perseverancia"},
-    {id:73,texto:"Bienaventurado el varón que soporta la prueba; recibirá la corona de vida.",categoria:"Perseverancia"},
-    {id:74,texto:"Sé fiel hasta la muerte, y yo te daré la corona de la vida.",categoria:"Perseverancia"},
-    {id:75,texto:"Estad firmes y constantes, sabiendo que vuestro trabajo en el Señor no es en vano.",categoria:"Perseverancia"},
-    {id:76,texto:"Yo soy Jehová tu sanador.",categoria:"Salud"},
-    {id:77,texto:"Él es quien perdona todas tus iniquidades, el que sana todas tus dolencias.",categoria:"Salud"},
-    {id:78,texto:"Por su llaga fuimos nosotros curados.",categoria:"Salud"},
-    {id:79,texto:"La oración de fe salvará al enfermo, y el Señor lo levantará.",categoria:"Salud"},
-    {id:80,texto:"Envió su palabra, y los sanó, y los libró de su ruina.",categoria:"Salud"},
-    {id:81,texto:"El que habita al abrigo del Altísimo, morará bajo la sombra del Omnipotente.",categoria:"Protección"},
-    {id:82,texto:"Á sus ángeles mandará acerca de ti, que te guarden en todos tus caminos.",categoria:"Protección"},
-    {id:83,texto:"Jehová te guardará de todo mal; él guardará tu alma.",categoria:"Protección"},
-    {id:84,texto:"Ninguna arma forjada contra ti prosperará.",categoria:"Protección"},
-    {id:85,texto:"Fiel es el Señor, que os afirmará y guardará del mal.",categoria:"Protección"},
-    {id:86,texto:"La paz os dejo, mi paz os doy; no se turbe vuestro corazón, ni tenga miedo.",categoria:"Paz"},
-    {id:87,texto:"La paz de Dios, que sobrepasa todo entendimiento, guardará vuestros corazones.",categoria:"Paz"},
-    {id:88,texto:"En paz me acostaré asimismo, y dormiré; porque solo tú, Jehová, me haces vivir confiado.",categoria:"Paz"},
-    {id:89,texto:"Jehová alce sobre ti su rostro, y ponga en ti paz.",categoria:"Paz"},
-    {id:90,texto:"El trabajo de la justicia será paz; y la labor de la justicia, reposo y seguridad para siempre.",categoria:"Paz"},
-    {id:91,texto:"Dios resiste á los soberbios, y da gracia á los humildes.",categoria:"Humildad"},
-    {id:92,texto:"El que se humillare, será ensalzado.",categoria:"Humildad"},
-    {id:93,texto:"Con los humildes está la sabiduría.",categoria:"Humildad"},
-    {id:94,texto:"Humillaos pues bajo la poderosa mano de Dios, para que él os ensalce á su tiempo.",categoria:"Humildad"},
-    {id:95,texto:"Nada hagáis por vanagloria; sino en humildad, estimando cada uno á los otros como superiores á él mismo.",categoria:"Humildad"},
-    {id:96,texto:"El obedecer es mejor que los sacrificios.",categoria:"Obediencia"},
-    {id:97,texto:"Si me amáis, guardad mis mandamientos.",categoria:"Obediencia"},
-    {id:98,texto:"En mi corazón he guardado tus dichos, para no pecar contra ti.",categoria:"Obediencia"},
-    {id:99,texto:"Es menester obedecer á Dios antes que á los hombres.",categoria:"Obediencia"},
-    {id:100,texto:"Bienaventurados los que oyen la palabra de Dios, y la guardan.",categoria:"Obediencia"},
-    {id:101,texto:"Antes corra el juicio como las aguas, y la justicia como impetuoso arroyo.",categoria:"Justicia"},
-    {id:102,texto:"El hacer justicia y juicio es á Jehová más agradable que el sacrificio.",categoria:"Justicia"},
-    {id:103,texto:"Justicia y juicio son el asiento de tu trono.",categoria:"Justicia"},
-    {id:104,texto:"Jehová ama el juicio, y no desampara á sus santos.",categoria:"Justicia"},
-    {id:105,texto:"Mía es la venganza, yo pagaré, dice el Señor.",categoria:"Justicia"},
-    {id:106,texto:"No hay otro nombre bajo el cielo dado á los hombres, en que podamos ser salvos.",categoria:"Salvación"},
-    {id:107,texto:"Si confesares con tu boca al Señor Jesús, y creyeres en tu corazón que Dios le levantó de los muertos, serás salvo.",categoria:"Salvación"},
-    {id:108,texto:"Porque por gracia sois salvos por la fe; y esto no de vosotros, pues es don de Dios.",categoria:"Salvación"},
-    {id:109,texto:"Yo soy la puerta: el que por mí entrare, será salvo.",categoria:"Salvación"},
-    {id:110,texto:"Dios es mi salvación; me aseguraré y no temeré.",categoria:"Salvación"},
-    {id:111,texto:"Pedid, y se os dará; buscad, y hallaréis; llamad, y se os abrirá.",categoria:"Oración"},
-    {id:112,texto:"Orad sin cesar.",categoria:"Oración"},
-    {id:113,texto:"La oración eficaz del justo puede mucho.",categoria:"Oración"},
-    {id:114,texto:"Clama á mí, y yo te responderé, y te enseñaré cosas grandes y dificultosas.",categoria:"Oración"},
-    {id:115,texto:"Si demandáremos alguna cosa conforme á su voluntad, él nos oye.",categoria:"Oración"},
-    {id:116,texto:"La disciplina produce fruto apacible de justicia á los que por ella están ejercitados.",categoria:"Disciplina"},
-    {id:117,texto:"Jehová al que ama castiga, como el padre al hijo que quiere.",categoria:"Disciplina"},
-    {id:118,texto:"No nos ha dado Dios el espíritu de cobardía, sino de poder, y de amor, y de templanza.",categoria:"Disciplina"},
-    {id:119,texto:"El que ama la doctrina, ama la sabiduría.",categoria:"Disciplina"},
-    {id:120,texto:"Renunciando á los deseos mundanos, vivamos sobria, justa, y piadosamente.",categoria:"Disciplina"},
-    {id:121,texto:"Gustad, y ved que es bueno Jehová.",categoria:"Bondad"},
-    {id:122,texto:"El fruto del Espíritu es: amor, gozo, paz, paciencia, benignidad, bondad.",categoria:"Bondad"},
-    {id:123,texto:"Bueno es Jehová para todos, y sus misericordias sobre todas sus obras.",categoria:"Bondad"},
-    {id:124,texto:"La bondad de Dios te guía al arrepentimiento.",categoria:"Bondad"},
-    {id:125,texto:"Estad llenos de bondad, llenos de todo conocimiento.",categoria:"Bondad"},
-    {id:126,texto:"Las misericordias de Jehová no se han acabado. Nuevas son cada mañana; grande es tu fidelidad.",categoria:"Misericordia"},
-    {id:127,texto:"Misericordioso y clemente es Jehová; lento para la ira, y grande en misericordia.",categoria:"Misericordia"},
-    {id:128,texto:"Dios, que es rico en misericordia, por su mucho amor nos dio vida juntamente con Cristo.",categoria:"Misericordia"},
-    {id:129,texto:"Sed pues misericordiosos, como también vuestro Padre es misericordioso.",categoria:"Misericordia"},
-    {id:130,texto:"¿Qué Dios como tú, que perdona la maldad? Se deleita en misericordia.",categoria:"Misericordia"},
-    {id:131,texto:"De modo que si alguno está en Cristo, nueva criatura es: las cosas viejas pasaron; he aquí, todas son hechas nuevas.",categoria:"Renovación"},
-    {id:132,texto:"El hombre interior se renueva de día en día.",categoria:"Renovación"},
-    {id:133,texto:"Transformaos por la renovación de vuestro entendimiento.",categoria:"Renovación"},
-    {id:134,texto:"He aquí que yo hago nuevas cosas; haré también camino en el desierto.",categoria:"Renovación"},
-    {id:135,texto:"Crea en mí, oh Dios, un corazón limpio; y renueva un espíritu recto dentro de mí.",categoria:"Renovación"},
-    {id:136,texto:"Fortaléceos en el Señor, y en el poder de su fuerza.",categoria:"Fortaleza espiritual"},
-    {id:137,texto:"El ser fortalecidos con poder en el hombre interior por su Espíritu.",categoria:"Fortaleza espiritual"},
-    {id:138,texto:"Todo lo puedo en Cristo que me fortalece.",categoria:"Fortaleza espiritual"},
-    {id:139,texto:"Mi potencia en la flaqueza se perfecciona.",categoria:"Fortaleza espiritual"},
-    {id:140,texto:"No con ejército, ni con fuerza, sino con mi Espíritu, dice Jehová.",categoria:"Fortaleza espiritual"},
-    {id:141,texto:"Jehová es mi luz y mi salvación: ¿de quién temeré?",categoria:"Luz"},
-    {id:142,texto:"Yo soy la luz del mundo; el que me sigue no andará en tinieblas.",categoria:"Luz"},
-    {id:143,texto:"Lámpara es á mis pies tu palabra, y lumbrera á mi camino.",categoria:"Luz"},
-    {id:144,texto:"El pueblo que andaba en tinieblas vio grande luz.",categoria:"Luz"},
-    {id:145,texto:"Dios mandó que de las tinieblas resplandeciese la luz en nuestros corazones.",categoria:"Luz"},
-    {id:146,texto:"Y conoceréis la verdad, y la verdad os hará libres.",categoria:"Verdad"},
-    {id:147,texto:"Yo soy el camino, y la verdad, y la vida.",categoria:"Verdad"},
-    {id:148,texto:"Tu palabra es verdad.",categoria:"Verdad"},
-    {id:149,texto:"El principio de tu palabra es verdad.",categoria:"Verdad"},
-    {id:150,texto:"El que habla verdad declara justicia.",categoria:"Verdad"},
-    {id:151,texto:"Si el Hijo os libertare, seréis verdaderamente libres.",categoria:"Libertad"},
-    {id:152,texto:"Estad firmes en la libertad con que Cristo nos hizo libres.",categoria:"Libertad"},
-    {id:153,texto:"Donde está el Espíritu del Señor, allí hay libertad.",categoria:"Libertad"},
-    {id:154,texto:"Y andaré en libertad, porque busqué tus mandamientos.",categoria:"Libertad"},
-    {id:155,texto:"El Espíritu me ungió para publicar libertad á los cautivos.",categoria:"Libertad"},
-    {id:156,texto:"En tu presencia hay hartura de gozos; á tu diestra hay deleites para siempre.",categoria:"Gozo"},
-    {id:157,texto:"Me alegraré en Jehová, y me gozaré en el Dios de mi salvación.",categoria:"Gozo"},
-    {id:158,texto:"El lloro puede durar una noche, mas la alegría viene en la mañana.",categoria:"Gozo"},
-    {id:159,texto:"Pedid, y recibiréis, para que vuestro gozo sea cumplido.",categoria:"Gozo"},
-    {id:160,texto:"Los que sembraron con lágrimas, con regocijo segarán.",categoria:"Gozo"},
-    {id:161,texto:"Como el padre se compadece de los hijos, se compadece Jehová de los que le temen.",categoria:"Compasión"},
-    {id:162,texto:"Vestíos de entrañas de misericordia, de benignidad, de humildad, de mansedumbre.",categoria:"Compasión"},
-    {id:163,texto:"Yo nunca me olvidaré de ti.",categoria:"Compasión"},
-    {id:164,texto:"Sed compasivos, amándoos fraternalmente, misericordiosos.",categoria:"Compasión"},
-    {id:165,texto:"Tuvo compasión de ellas; porque estaban cansadas y tendidas como ovejas que no tienen pastor.",categoria:"Compasión"},
-    {id:166,texto:"Todas las cosas les ayudan á bien á los que aman á Dios.",categoria:"Esperanza en tiempos difíciles"},
-    {id:167,texto:"Dios es nuestro amparo y fortaleza, nuestro pronto auxilio en las tribulaciones.",categoria:"Esperanza en tiempos difíciles"},
-    {id:168,texto:"En todo somos atribulados, mas no angustiados; derribados, mas no destruídos.",categoria:"Esperanza en tiempos difíciles"},
-    {id:169,texto:"Muchas son las aflicciones del justo; mas de todas ellas le librará Jehová.",categoria:"Esperanza en tiempos difíciles"},
-    {id:170,texto:"Jehová es bueno, fortaleza en el día de la angustia.",categoria:"Esperanza en tiempos difíciles"},
-    {id:171,texto:"En quien tenemos redención por su sangre, el perdón de los pecados.",categoria:"Redención"},
-    {id:172,texto:"Yo te redimí; te puse nombre, mío eres tú.",categoria:"Redención"},
-    {id:173,texto:"Siendo justificados gratuitamente por su gracia, por la redención que es en Cristo Jesús.",categoria:"Redención"},
-    {id:174,texto:"En Jehová hay misericordia, y abundante redención con él.",categoria:"Redención"},
-    {id:175,texto:"Cristo nos redimió de la maldición de la ley.",categoria:"Redención"},
-    {id:176,texto:"Sed también vosotros santos en toda vuestra manera de vivir.",categoria:"Santidad"},
-    {id:177,texto:"Seréis santos, porque yo soy santo.",categoria:"Santidad"},
-    {id:178,texto:"Seguid la santidad, sin la cual nadie verá al Señor.",categoria:"Santidad"},
-    {id:179,texto:"No nos ha llamado Dios á impureza, sino á santificación.",categoria:"Santidad"},
-    {id:180,texto:"Limpiémonos de toda inmundicia, perfeccionando la santificación en el temor de Dios.",categoria:"Santidad"},
-    {id:181,texto:"El Hijo del hombre no vino para ser servido, sino para servir.",categoria:"Servicio"},
-    {id:182,texto:"Servíos por el amor los unos á los otros.",categoria:"Servicio"},
-    {id:183,texto:"Cada uno según el don que ha recibido, minístrelo á los otros.",categoria:"Servicio"},
-    {id:184,texto:"En cuanto lo hicisteis á uno de estos mis hermanos pequeños, á mí lo hicisteis.",categoria:"Servicio"},
-    {id:185,texto:"Yo y mi casa serviremos á Jehová.",categoria:"Servicio"},
-    {id:186,texto:"¡Mirad cuán bueno y cuán delicioso es habitar los hermanos en unión!",categoria:"Unidad"},
-    {id:187,texto:"Solícitos en guardar la unidad del Espíritu en el vínculo de la paz.",categoria:"Unidad"},
-    {id:188,texto:"Para que todos sean una cosa; como tú en mí, y yo en ti.",categoria:"Unidad"},
-    {id:189,texto:"El amor es el vínculo de la perfección.",categoria:"Unidad"},
-    {id:190,texto:"Tened un mismo sentir, teniendo un mismo amor, unidos de alma.",categoria:"Unidad"},
-    {id:191,texto:"Sed pues benignos unos con otros, perdonándoos unos á otros, como también Dios os perdonó.",categoria:"Perdón y reconciliación"},
-    {id:192,texto:"Reconcíliate primero con tu hermano.",categoria:"Perdón y reconciliación"},
-    {id:193,texto:"De la manera que Cristo os perdonó, así también hacedlo vosotros.",categoria:"Perdón y reconciliación"},
-    {id:194,texto:"No te digo hasta siete, sino hasta setenta veces siete.",categoria:"Perdón y reconciliación"},
-    {id:195,texto:"Dios nos reconcilió consigo mismo por Cristo, y nos dió el ministerio de la reconciliación.",categoria:"Perdón y reconciliación"},
-    {id:196,texto:"Encomienda á Jehová tu camino, y espera en él; y él hará.",categoria:"Confianza en Dios"},
-    {id:197,texto:"Confía en Jehová de todo tu corazón, y no te apoyes en tu propia prudencia.",categoria:"Confianza en Dios"},
-    {id:198,texto:"Derramad delante de él vuestro corazón: Dios es nuestro refugio.",categoria:"Confianza en Dios"},
-    {id:199,texto:"Confiad en Jehová para siempre; porque en Jehová el Señor está la fortaleza de los siglos.",categoria:"Confianza en Dios"},
-    {id:200,texto:"No desamparaste á los que te buscaron, oh Jehová.",categoria:"Confianza en Dios"},
-  ]
+    // ===== ANSIEDAD (30 versículos) =====
+    {
+      id: 1,
+      texto:
+        "No os afanéis por vuestra vida, qué comeréis; ni por el cuerpo, qué vestiréis.",
+      categoria: "Ansiedad",
+    },
+    {
+      id: 2,
+      texto:
+        "Echando toda vuestra solicitud en él, porque él tiene cuidado de vosotros.",
+      categoria: "Ansiedad",
+    },
+    {
+      id: 3,
+      texto: "El Señor está cerca. No os afanéis por nada.",
+      categoria: "Ansiedad",
+    },
+    {
+      id: 4,
+      texto:
+        "Tú guardarás en completa paz a aquel cuyo pensamiento en ti persevera.",
+      categoria: "Ansiedad",
+    },
+    {
+      id: 5,
+      texto:
+        "Venid a mí todos los que estáis trabajados y cargados, y yo os haré descansar.",
+      categoria: "Ansiedad",
+    },
+    {
+      id: 6,
+      texto: "Pon tu cuidado en Jehová, y él te sustentará.",
+      categoria: "Ansiedad",
+    },
+    {
+      id: 7,
+      texto:
+        "La paz de Dios, que sobrepasa todo entendimiento, guardará vuestros corazones.",
+      categoria: "Ansiedad",
+    },
+    {
+      id: 8,
+      texto:
+        "No temas, porque yo estoy contigo; no desmayes, porque yo soy tu Dios.",
+      categoria: "Ansiedad",
+    },
+    {
+      id: 9,
+      texto:
+        "En paz me acostaré, y asimismo dormiré, porque solo tú, Jehová, me haces vivir confiado.",
+      categoria: "Ansiedad",
+    },
+    {
+      id: 10,
+      texto: "¿Quién de vosotros podrá con su afán añadir algo a su estatura?",
+      categoria: "Ansiedad",
+    },
+    {
+      id: 11,
+      texto:
+        "No os angustiéis por el día de mañana, porque el día de mañana traerá su afán.",
+      categoria: "Ansiedad",
+    },
+    { id: 12, texto: "Basta a cada día su propio mal.", categoria: "Ansiedad" },
+    {
+      id: 13,
+      texto: "En el día que temo, yo en ti confío.",
+      categoria: "Ansiedad",
+    },
+    {
+      id: 14,
+      texto: "Jehová es mi pastor; nada me faltará.",
+      categoria: "Ansiedad",
+    },
+    {
+      id: 15,
+      texto: "Echad sobre él toda vuestra ansiedad, porque él os cuida.",
+      categoria: "Ansiedad",
+    },
+    {
+      id: 16,
+      texto:
+        "No se turbe vuestro corazón; creéis en Dios, creed también en mí.",
+      categoria: "Ansiedad",
+    },
+    {
+      id: 17,
+      texto: "Mi paz os doy, no como el mundo la da, yo os la doy.",
+      categoria: "Ansiedad",
+    },
+    {
+      id: 18,
+      texto:
+        "Dios es nuestro amparo y fortaleza, nuestro pronto auxilio en las tribulaciones.",
+      categoria: "Ansiedad",
+    },
+    {
+      id: 19,
+      texto: "El Señor es mi luz y mi salvación; ¿de quién temeré?",
+      categoria: "Ansiedad",
+    },
+    {
+      id: 20,
+      texto:
+        "Ciertamente él me librará de la red del cazador, de la peste destructora.",
+      categoria: "Ansiedad",
+    },
+    {
+      id: 21,
+      texto: "Con sus plumas te cubrirá, y debajo de sus alas estarás seguro.",
+      categoria: "Ansiedad",
+    },
+    {
+      id: 22,
+      texto: "No temerás el terror nocturno, ni saeta que vuele de día.",
+      categoria: "Ansiedad",
+    },
+    {
+      id: 23,
+      texto:
+        "Porque a sus ángeles mandará acerca de ti, que te guarden en todos tus caminos.",
+      categoria: "Ansiedad",
+    },
+    {
+      id: 24,
+      texto:
+        "Clama a mí, y yo te responderé, y te enseñaré cosas grandes y ocultas que no sabes.",
+      categoria: "Ansiedad",
+    },
+    {
+      id: 25,
+      texto:
+        "Venid, volvamos a Jehová; porque él arrebató, y nos curará; hirió, y nos vendará.",
+      categoria: "Ansiedad",
+    },
+    {
+      id: 26,
+      texto: "Yo quité tu pecado, y te vestí de ropas de gala.",
+      categoria: "Ansiedad",
+    },
+    { id: 27, texto: "El justo vivirá por su fe.", categoria: "Ansiedad" },
+    {
+      id: 28,
+      texto: "Encomienda a Jehová tu camino, y confía en él; y él hará.",
+      categoria: "Ansiedad",
+    },
+    {
+      id: 29,
+      texto: "Espera en Jehová, y guarda su camino, y él te ensalzará.",
+      categoria: "Ansiedad",
+    },
+    {
+      id: 30,
+      texto: "Guarda silencio ante Jehová, y espera en él.",
+      categoria: "Ansiedad",
+    },
+
+    // ===== MIEDO (30 versículos) =====
+    {
+      id: 31,
+      texto:
+        "No temas, porque yo estoy contigo; no desmayes, porque yo soy tu Dios.",
+      categoria: "Miedo",
+    },
+    {
+      id: 32,
+      texto:
+        "Porque no nos ha dado Dios espíritu de temor, sino de poder, de amor y de dominio propio.",
+      categoria: "Miedo",
+    },
+    {
+      id: 33,
+      texto: "El Señor es mi luz y mi salvación; ¿de quién temeré?",
+      categoria: "Miedo",
+    },
+    {
+      id: 34,
+      texto: "Cuando tenga miedo, en ti confiaré.",
+      categoria: "Miedo",
+    },
+    {
+      id: 35,
+      texto:
+        "Tú no temas, porque yo estoy contigo; no te angusties, porque yo soy tu Dios.",
+      categoria: "Miedo",
+    },
+    {
+      id: 36,
+      texto:
+        "No temáis a los que matan el cuerpo, mas no pueden matar el alma.",
+      categoria: "Miedo",
+    },
+    {
+      id: 37,
+      texto:
+        "El Señor está conmigo; no temeré lo que me pueda hacer el hombre.",
+      categoria: "Miedo",
+    },
+    {
+      id: 38,
+      texto:
+        "Aunque ande en valle de sombra de muerte, no temeré mal alguno, porque tú estarás conmigo.",
+      categoria: "Miedo",
+    },
+    {
+      id: 39,
+      texto:
+        "No temas, porque yo te he redimido; te he llamado por tu nombre; mío eres.",
+      categoria: "Miedo",
+    },
+    {
+      id: 40,
+      texto: "He aquí, Dios es mi salvación; me aseguraré y no temeré.",
+      categoria: "Miedo",
+    },
+    {
+      id: 41,
+      texto: "En el día que temo, yo en ti confío.",
+      categoria: "Miedo",
+    },
+    {
+      id: 42,
+      texto: "¿A quién temeré? Jehová es la fortaleza de mi vida.",
+      categoria: "Miedo",
+    },
+    { id: 43, texto: "No temas, porque yo soy contigo.", categoria: "Miedo" },
+    {
+      id: 44,
+      texto: "No te desmayes, que yo soy tu Dios.",
+      categoria: "Miedo",
+    },
+    {
+      id: 45,
+      texto: "El Señor es mi ayudador; no temeré lo que me hará el hombre.",
+      categoria: "Miedo",
+    },
+    {
+      id: 46,
+      texto:
+        "El que habita al abrigo del Altísimo morará bajo la sombra del Omnipotente.",
+      categoria: "Miedo",
+    },
+    {
+      id: 47,
+      texto:
+        "Dios es nuestro amparo y fortaleza, nuestro pronto auxilio en las tribulaciones.",
+      categoria: "Miedo",
+    },
+    {
+      id: 48,
+      texto: "No temerás el terror nocturno, ni saeta que vuele de día.",
+      categoria: "Miedo",
+    },
+    {
+      id: 49,
+      texto: "Porque él me esconderá en su tabernáculo en el día del mal.",
+      categoria: "Miedo",
+    },
+    {
+      id: 50,
+      texto:
+        "No temas, pequeño rebaño, porque a vuestro Padre le ha placido daros el reino.",
+      categoria: "Miedo",
+    },
+    {
+      id: 51,
+      texto: "Estad quietos, y conoced que yo soy Dios.",
+      categoria: "Miedo",
+    },
+    {
+      id: 52,
+      texto: "Jehová es mi pastor; nada me faltará.",
+      categoria: "Miedo",
+    },
+    {
+      id: 53,
+      texto: "Con sus plumas te cubrirá, y debajo de sus alas estarás seguro.",
+      categoria: "Miedo",
+    },
+    { id: 54, texto: "No temas; porque yo soy tu Dios.", categoria: "Miedo" },
+    {
+      id: 55,
+      texto:
+        "Puse a Jehová siempre delante de mí; porque está a mi diestra, no seré conmovido.",
+      categoria: "Miedo",
+    },
+    {
+      id: 56,
+      texto:
+        "Jehová es quien va delante de ti; él estará contigo, no te dejará, ni te desamparará.",
+      categoria: "Miedo",
+    },
+    {
+      id: 57,
+      texto: "Espera en Jehová; esfuérzate, y aliéntese tu corazón.",
+      categoria: "Miedo",
+    },
+    {
+      id: 58,
+      texto:
+        "Los ángeles de Jehová acampan alrededor de los que le temen, y los defienden.",
+      categoria: "Miedo",
+    },
+    {
+      id: 59,
+      texto:
+        "Porque yo, Jehová, soy tu guardador; yo soy tu sombra a tu mano derecha.",
+      categoria: "Miedo",
+    },
+    { id: 60, texto: "El que te guarda no se adormecerá.", categoria: "Miedo" },
+
+    // ===== TRISTEZA (30 versículos) =====
+    {
+      id: 61,
+      texto:
+        "El Señor está cerca de los que tienen quebrantado el corazón, y salva a los contritos de espíritu.",
+      categoria: "Tristeza",
+    },
+    {
+      id: 62,
+      texto: "Los que sembraron con lágrimas, con regocijo segarán.",
+      categoria: "Tristeza",
+    },
+    {
+      id: 63,
+      texto:
+        "Enjugará Dios toda lágrima de los ojos de ellos; y la muerte no será más.",
+      categoria: "Tristeza",
+    },
+    {
+      id: 64,
+      texto: "El Señor es mi pastor; nada me faltará.",
+      categoria: "Tristeza",
+    },
+    {
+      id: 65,
+      texto:
+        "Bienaventurados los que lloran, porque ellos recibirán consolación.",
+      categoria: "Tristeza",
+    },
+    {
+      id: 66,
+      texto:
+        "No os entristezcáis, porque el gozo de Jehová es vuestra fortaleza.",
+      categoria: "Tristeza",
+    },
+    {
+      id: 67,
+      texto: "El Señor es mi roca, mi fortaleza y mi libertador.",
+      categoria: "Tristeza",
+    },
+    {
+      id: 68,
+      texto:
+        "El Señor da fuerzas a su pueblo; el Señor bendice a su pueblo con paz.",
+      categoria: "Tristeza",
+    },
+    {
+      id: 69,
+      texto:
+        "Porque yo sé los pensamientos que tengo acerca de vosotros, pensamientos de paz, y no de mal.",
+      categoria: "Tristeza",
+    },
+    {
+      id: 70,
+      texto:
+        "Volved al que es misericordioso, porque él perdonará ampliamente.",
+      categoria: "Tristeza",
+    },
+    {
+      id: 71,
+      texto:
+        "El llanto puede durar toda la noche, pero la alegría llega por la mañana.",
+      categoria: "Tristeza",
+    },
+    {
+      id: 72,
+      texto:
+        "El Señor está cerca de los quebrantados de corazón, y salva a los abatidos de espíritu.",
+      categoria: "Tristeza",
+    },
+    {
+      id: 73,
+      texto:
+        "El Señor sostiene a todos los que caen, y levanta a todos los oprimidos.",
+      categoria: "Tristeza",
+    },
+    {
+      id: 74,
+      texto:
+        "Venid a mí todos los que estáis trabajados y cargados, y yo os haré descansar.",
+      categoria: "Tristeza",
+    },
+    {
+      id: 75,
+      texto: "El Señor es mi luz y mi salvación; ¿de quién temeré?",
+      categoria: "Tristeza",
+    },
+    {
+      id: 76,
+      texto: "Espera en Jehová; esfuérzate, y aliéntese tu corazón.",
+      categoria: "Tristeza",
+    },
+    {
+      id: 77,
+      texto: "Cantad al Señor, porque ha hecho cosas magníficas.",
+      categoria: "Tristeza",
+    },
+    {
+      id: 78,
+      texto:
+        "El Señor es mi fortaleza y mi escudo; en él confió mi corazón, y fui ayudado.",
+      categoria: "Tristeza",
+    },
+    {
+      id: 79,
+      texto: "Tú volverás, oh Israel, serás consolado.",
+      categoria: "Tristeza",
+    },
+    {
+      id: 80,
+      texto: "Consolaos, consolaos, pueblo mío, dice vuestro Dios.",
+      categoria: "Tristeza",
+    },
+    {
+      id: 81,
+      texto:
+        "Yo te he desamparado por un poco de tiempo, pero te recogeré con grandes misericordias.",
+      categoria: "Tristeza",
+    },
+    {
+      id: 82,
+      texto: "El Señor te guiará siempre, y saciará tu alma en las sequías.",
+      categoria: "Tristeza",
+    },
+    {
+      id: 83,
+      texto: "Gozaos con los que se gozan; llorad con los que lloran.",
+      categoria: "Tristeza",
+    },
+    {
+      id: 84,
+      texto:
+        "Ninguna aflicción es causa de gozo, sino de tristeza; pero después da fruto apacible de justicia.",
+      categoria: "Tristeza",
+    },
+    {
+      id: 85,
+      texto:
+        "El Señor escuchó mi clamor, y me sacó de la fosa de la desesperación.",
+      categoria: "Tristeza",
+    },
+    {
+      id: 86,
+      texto: "Recibirán gozo y alegría, y huirán la tristeza y el gemido.",
+      categoria: "Tristeza",
+    },
+    {
+      id: 87,
+      texto: "He aquí que vienen días en que serán consolados.",
+      categoria: "Tristeza",
+    },
+    {
+      id: 88,
+      texto: "El Señor ha limpiado las lágrimas de todo rostro.",
+      categoria: "Tristeza",
+    },
+    {
+      id: 89,
+      texto: "Jehová es mi porción, dijo mi alma; por tanto, en él esperaré.",
+      categoria: "Tristeza",
+    },
+    {
+      id: 90,
+      texto: "Bueno es esperar en silencio la salvación de Jehová.",
+      categoria: "Tristeza",
+    },
+
+    // ===== SOLEDAD (30 versículos) =====
+    { id: 91, texto: "No te desampararé, ni te dejaré.", categoria: "Soledad" },
+    {
+      id: 92,
+      texto:
+        "He aquí, yo estoy con vosotros todos los días, hasta el fin del mundo.",
+      categoria: "Soledad",
+    },
+    {
+      id: 93,
+      texto:
+        "El Señor va delante de ti; él estará contigo, no te dejará ni te desamparará.",
+      categoria: "Soledad",
+    },
+    {
+      id: 94,
+      texto:
+        "Ciertamente él me librará de la red del cazador, de la peste destructora.",
+      categoria: "Soledad",
+    },
+    {
+      id: 95,
+      texto: "Con sus plumas te cubrirá, y debajo de sus alas estarás seguro.",
+      categoria: "Soledad",
+    },
+    {
+      id: 96,
+      texto: "Nadie me abandonó, porque el Señor estaba conmigo.",
+      categoria: "Soledad",
+    },
+    {
+      id: 97,
+      texto:
+        "Aunque mi padre y mi madre me dejaran, con todo, Jehová me recogerá.",
+      categoria: "Soledad",
+    },
+    {
+      id: 98,
+      texto: "Me has rodeado de cánticos de liberación.",
+      categoria: "Soledad",
+    },
+    {
+      id: 99,
+      texto: "Jehová es mi pastor; nada me faltará.",
+      categoria: "Soledad",
+    },
+    {
+      id: 100,
+      texto: "El Señor es mi luz y mi salvación; ¿de quién temeré?",
+      categoria: "Soledad",
+    },
+  ],
 };
 
 let historial = {};
 
 function obtenerVersiculo(cat) {
   if (!historial[cat]) historial[cat] = [];
-  let disp = db.versiculos.filter(v => v.categoria === cat && !historial[cat].includes(v.id));
+  let disp = db.versiculos.filter(
+    (v) => v.categoria === cat && !historial[cat].includes(v.id),
+  );
   if (disp.length === 0) {
     historial[cat] = [];
-    disp = db.versiculos.filter(v => v.categoria === cat);
+    disp = db.versiculos.filter((v) => v.categoria === cat);
   }
   let sel = disp[Math.floor(Math.random() * disp.length)];
   if (sel) historial[cat].push(sel.id);
   return sel;
 }
 
-const systemPrompt = cat =>
+const systemPrompt = (cat) =>
   `Genera un versículo bíblico corto para la categoría ${cat}, sin explicaciones ni referencias.`;
 
 export { db, historial, obtenerVersiculo, systemPrompt };
