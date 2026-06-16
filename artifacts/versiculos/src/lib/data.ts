@@ -532,6 +532,6 @@ export function getCategories(): CategoryInfo[] {
   return CATEGORIES_DEF.map((cat) => ({
     category: cat.name,
     label: cat.label,
-    verse_count: RAW_VERSES.filter((v) => v.category === cat.name).length,
+    verse_count: getAllVersesForCategory(cat.name).length,
   }));
 }
