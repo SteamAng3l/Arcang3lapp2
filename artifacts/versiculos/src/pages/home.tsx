@@ -1,11 +1,10 @@
 import { useState } from "react";
-import { useGetVerse, getRandomVerse } from "@workspace/api-client-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { BookOpen, RefreshCw, Send, Heart, HeartOff } from "lucide-react";
-import type { VerseResponse } from "@workspace/api-client-react";
+import { getVerseForProblem, getRandomVerseLocal, type VerseResponse } from "@/lib/data";
 import { useFavorites } from "@/hooks/use-favorites";
 import { VerseShareButtons } from "@/components/verse-share-buttons";
 import { getHistory, addToHistory, getAllHistory } from "@/hooks/use-verse-history";
@@ -13,48 +12,36 @@ import { getHistory, addToHistory, getAllHistory } from "@/hooks/use-verse-histo
 export default function Home() {
   const [problem, setProblem] = useState("");
   const [activeVerse, setActiveVerse] = useState<VerseResponse | null>(null);
-  const [isRandomFetching, setIsRandomFetching] = useState(false);
+  const [isPending, setIsPending] = useState(false);
   const { addFavorite, removeFavorite, isFavorite } = useFavorites();
-
-  const getVerseMutation = useGetVerse();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!problem.trim()) return;
     setActiveVerse(null);
-
-    // We don't know the category yet — will track after response
-    const excluded = getAllHistory();
-    getVerseMutation.mutate(
-      { data: { problem: problem.trim(), excluded_ids: excluded.length ? excluded : undefined } },
-      {
-        onSuccess: (data) => {
-          setActiveVerse(data);
-          addToHistory(data.detected_category, data.verse_id);
-        },
+    setIsPending(true);
+    setTimeout(() => {
+      const excluded = getAllHistory();
+      const data = getVerseForProblem(problem.trim(), excluded);
+      if (data) {
+        setActiveVerse(data);
+        addToHistory(data.detected_category, data.verse_id);
       }
-    );
+      setIsPending(false);
+    }, 300);
   };
 
-  const handleRandom = async () => {
-    setIsRandomFetching(true);
+  const handleRandom = () => {
     setActiveVerse(null);
-    try {
+    setIsPending(true);
+    setTimeout(() => {
       const excludedIds = getHistory("random");
-      const params = excludedIds.length > 0
-        ? { excluded_ids: excludedIds.join(",") }
-        : undefined;
-      const data = await getRandomVerse(params);
+      const data = getRandomVerseLocal(excludedIds);
       setActiveVerse(data);
       addToHistory("random", data.verse_id);
-    } catch {
-      // silently ignore
-    } finally {
-      setIsRandomFetching(false);
-    }
+      setIsPending(false);
+    }, 300);
   };
-
-  const isPending = getVerseMutation.isPending || isRandomFetching;
 
   const toggleFavorite = () => {
     if (!activeVerse) return;
@@ -95,7 +82,7 @@ export default function Home() {
               className="w-full sm:w-auto font-serif text-xl h-14 px-10 rounded-full"
               data-testid="button-submit-problem"
             >
-              {getVerseMutation.isPending ? (
+              {isPending ? (
                 <RefreshCw className="mr-2 h-5 w-5 animate-spin opacity-70" />
               ) : (
                 <Send className="mr-2 h-5 w-5 opacity-70" />
@@ -113,7 +100,7 @@ export default function Home() {
               className="w-full sm:w-auto font-serif text-xl h-14 px-10 rounded-full bg-transparent border-primary/20 hover:bg-primary/5 hover:text-primary"
               data-testid="button-random-verse"
             >
-              {isRandomFetching ? (
+              {isPending ? (
                 <RefreshCw className="mr-2 h-5 w-5 animate-spin opacity-70" />
               ) : (
                 <BookOpen className="mr-2 h-5 w-5 opacity-70" />

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { generateVerseImage } from "@/lib/verse-image";
 import { useToast } from "@/hooks/use-toast";
-import type { VerseResponse } from "@workspace/api-client-react";
+import type { VerseResponse } from "@/lib/data";
 import { Loader2 } from "lucide-react";
 
 interface Props {
