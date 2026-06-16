@@ -501,6 +501,18 @@ export function getVerseForCategory(
   return findBestVerse(label, categorySlug, excludedIds);
 }
 
+export function getAllVersesForCategory(categorySlug: string): VerseResponse[] {
+  const verses = RAW_VERSES.filter((v) => v.category === categorySlug);
+  const message = categoryMessages[categorySlug] ?? categoryMessages["esperanza"];
+  return verses.map((v) => ({
+    detected_category: v.category,
+    message,
+    verse_reference: v.verseReference,
+    verse_text: v.verseText,
+    verse_id: v.id,
+  }));
+}
+
 export function getRandomVerseLocal(excludedIds: number[] = []): VerseResponse {
   let pool = excludedIds.length > 0
     ? RAW_VERSES.filter((v) => !excludedIds.includes(v.id))

@@ -1,52 +1,39 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { RefreshCw, Heart, HeartOff } from "lucide-react";
-import { getCategories, getVerseForCategory, type VerseResponse } from "@/lib/data";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Heart, HeartOff } from "lucide-react";
+import { getCategories, getAllVersesForCategory, type VerseResponse } from "@/lib/data";
 import { useFavorites } from "@/hooks/use-favorites";
-import { VerseShareButtons } from "@/components/verse-share-buttons";
-import { getHistory, addToHistory } from "@/hooks/use-verse-history";
 
 const CATEGORIES = getCategories();
 
 export default function Categories() {
-  const [activeVerse, setActiveVerse] = useState<VerseResponse | null>(null);
+  const [verses, setVerses] = useState<VerseResponse[]>([]);
+  const [activeLabel, setActiveLabel] = useState("");
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [isPending, setIsPending] = useState(false);
   const { addFavorite, removeFavorite, isFavorite } = useFavorites();
 
-  const handleCategoryClick = (categorySlug: string) => {
-    setActiveVerse(null);
+  const handleCategoryClick = (categorySlug: string, label: string) => {
+    setVerses(getAllVersesForCategory(categorySlug));
+    setActiveLabel(label);
     setDialogOpen(true);
-    setIsPending(true);
-    setTimeout(() => {
-      const excludedIds = getHistory(categorySlug);
-      const data = getVerseForCategory(categorySlug, excludedIds);
-      if (data) {
-        setActiveVerse(data);
-        addToHistory(data.detected_category, data.verse_id);
-      }
-      setIsPending(false);
-    }, 300);
   };
 
-  const toggleFavorite = () => {
-    if (!activeVerse) return;
-    if (isFavorite(activeVerse.verse_reference)) {
-      removeFavorite(activeVerse.verse_reference);
+  const toggleFavorite = (verse: VerseResponse) => {
+    if (isFavorite(verse.verse_reference)) {
+      removeFavorite(verse.verse_reference);
     } else {
-      addFavorite(activeVerse);
+      addFavorite(verse);
     }
   };
-
-  const saved = activeVerse ? isFavorite(activeVerse.verse_reference) : false;
 
   return (
     <div className="w-full flex flex-col animate-in fade-in duration-700">
       <div className="text-center mb-10 space-y-3">
         <h2 className="text-3xl font-serif text-foreground">Temas de Consuelo</h2>
         <p className="text-muted-foreground font-serif text-xl leading-relaxed">
-          Elige un tema y recibirás un versículo que habla a esa necesidad.
+          Elige un tema y verás todos los versículos disponibles para esa necesidad.
         </p>
       </div>
 
@@ -54,7 +41,7 @@ export default function Categories() {
         {CATEGORIES.map((cat) => (
           <button
             key={cat.category}
-            onClick={() => handleCategoryClick(cat.category)}
+            onClick={() => handleCategoryClick(cat.category, cat.label)}
             className="text-left group relative overflow-hidden bg-card hover:bg-primary/5 border border-border/50 hover:border-primary/30 rounded-2xl p-7 transition-all duration-300 hover:shadow-sm"
             data-testid={`button-category-${cat.category}`}
           >
@@ -71,63 +58,44 @@ export default function Categories() {
       </div>
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="max-w-2xl bg-background border-primary/20 sm:rounded-3xl p-0 overflow-hidden">
-          <div className="p-8 md:p-12 text-center bg-gradient-to-b from-card to-background">
-            {isPending ? (
-              <div className="flex flex-col items-center justify-center py-14 space-y-6">
-                <RefreshCw className="h-10 w-10 text-primary animate-spin opacity-50" />
-                <p className="text-muted-foreground font-serif italic text-xl">
-                  Buscando consuelo...
-                </p>
-              </div>
-            ) : activeVerse ? (
-              <div className="animate-in fade-in zoom-in-95 duration-500">
-                <span
-                  className="inline-block px-5 py-2 rounded-full bg-primary/10 text-primary text-base font-medium tracking-wide uppercase mb-6"
-                  data-testid="modal-category"
-                >
-                  {activeVerse.detected_category}
-                </span>
-
-                <p
-                  className="text-2xl md:text-3xl font-serif text-foreground leading-relaxed mb-8"
-                  data-testid="modal-verse-text"
-                >
-                  "{activeVerse.verse_text}"
-                </p>
-
-                <div className="pt-6 border-t border-border/50 flex flex-col items-center gap-6">
-                  <div className="flex flex-col sm:flex-row items-center justify-center gap-5 w-full">
-                    <span
-                      className="font-serif text-2xl text-primary font-medium"
-                      data-testid="modal-verse-reference"
-                    >
-                      {activeVerse.verse_reference}
-                    </span>
-                    <Button
-                      variant={saved ? "default" : "outline"}
-                      size="lg"
-                      onClick={toggleFavorite}
-                      className="rounded-full h-12 px-7 text-lg font-serif gap-2"
-                    >
-                      {saved ? (
-                        <>
-                          <HeartOff className="h-5 w-5" />
-                          Guardado
-                        </>
-                      ) : (
-                        <>
-                          <Heart className="h-5 w-5" />
-                          Guardar en favoritos
-                        </>
-                      )}
-                    </Button>
+        <DialogContent className="max-w-2xl bg-background border-primary/20 sm:rounded-3xl p-0 overflow-hidden flex flex-col max-h-[85vh]">
+          <DialogHeader className="px-8 pt-8 pb-4 border-b border-border/50">
+            <DialogTitle className="font-serif text-2xl text-primary">{activeLabel}</DialogTitle>
+          </DialogHeader>
+          <ScrollArea className="flex-1 min-h-0">
+            <div className="px-8 py-6 space-y-6">
+              {verses.map((verse) => {
+                const saved = isFavorite(verse.verse_reference);
+                return (
+                  <div
+                    key={verse.verse_id}
+                    className="p-6 rounded-2xl bg-card border border-border/50 space-y-4"
+                  >
+                    <p className="text-xl font-serif text-foreground leading-relaxed">
+                      "{verse.verse_text}"
+                    </p>
+                    <div className="flex items-center justify-between gap-4 pt-2 border-t border-border/30">
+                      <span className="font-serif text-lg text-primary font-medium">
+                        {verse.verse_reference}
+                      </span>
+                      <Button
+                        variant={saved ? "default" : "outline"}
+                        size="sm"
+                        onClick={() => toggleFavorite(verse)}
+                        className="rounded-full h-9 px-5 text-base font-serif gap-1.5"
+                      >
+                        {saved ? (
+                          <><HeartOff className="h-4 w-4" />Guardado</>
+                        ) : (
+                          <><Heart className="h-4 w-4" />Guardar</>
+                        )}
+                      </Button>
+                    </div>
                   </div>
-                  <VerseShareButtons verse={activeVerse} />
-                </div>
-              </div>
-            ) : null}
-          </div>
+                );
+              })}
+            </div>
+          </ScrollArea>
         </DialogContent>
       </Dialog>
     </div>
