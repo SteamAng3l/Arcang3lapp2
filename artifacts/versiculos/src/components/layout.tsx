@@ -25,7 +25,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
     <div className="min-h-screen flex flex-col max-w-2xl mx-auto px-6 pt-10 pb-6">
       <header className="mb-14 text-center space-y-4">
         <Link href="/" className="inline-block group" data-testid="link-home">
-          <h1 className="text-5xl md:text-6xl font-serif text-primary tracking-tight transition-opacity group-hover:opacity-80">
+          <h1 className="important-word text-5xl md:text-6xl font-serif text-primary tracking-tight transition-opacity group-hover:opacity-80">
             Arcángel
           </h1>
         </Link>
