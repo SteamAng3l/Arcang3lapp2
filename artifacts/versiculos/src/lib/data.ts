@@ -253,6 +253,68 @@ const RAW_VERSES: RawVerse[] = [
   { id: 231, category: "confianza_dios", verseReference: "Isaías 26:4", verseText: "Confiad en Jehová para siempre; porque en Jehová el Señor está la fortaleza de los siglos." },
   { id: 232, category: "confianza_dios", verseReference: "Salmos 56:3", verseText: "El día que temo, yo en ti confío." },
   { id: 233, category: "confianza_dios", verseReference: "Nahum 1:7", verseText: "Jehová es bueno, fortaleza en el día de la angustia; y conoce á los que en él esperan." },
+
+  { id: 234, category: "disciplina", verseReference: "Proverbios 12:1", verseText: "El que ama la instrucción ama la sabiduría; mas el que aborrece la reprensión es ignorante." },
+  { id: 235, category: "disciplina", verseReference: "Proverbios 6:23", verseText: "Porque el mandamiento es lámpara, y la enseñanza es luz; y camino de vida las reprensiones que te instruyen." },
+  { id: 236, category: "disciplina", verseReference: "Hebreos 12:6", verseText: "Porque el Señor al que ama, castiga; y azota á cualquiera que recibe por hijo." },
+  { id: 237, category: "disciplina", verseReference: "Proverbios 3:12", verseText: "Porque Jehová al que ama castiga, como el padre al hijo que se deleita." },
+  { id: 238, category: "disciplina", verseReference: "1 Corintios 9:27", verseText: "Sino que golpeo mi cuerpo, y lo pongo en servidumbre; para que habiendo predicado á otros, yo mismo no sea descalificado." },
+
+  { id: 239, category: "bondad", verseReference: "Romanos 15:14", verseText: "Mas estoy persuadido de vosotros, hermanos míos, de que vosotros también estáis llenos de bondad, llenos de todo conocimiento." },
+  { id: 240, category: "bondad", verseReference: "Lucas 6:35", verseText: "Mas amad á vuestros enemigos, y haced bien, y prestad, no esperando de ello nada; y vuestro galardón será grande." },
+  { id: 241, category: "bondad", verseReference: "Proverbios 11:17", verseText: "El alma misericordiosa hará bien á su alma; mas el cruel se hace mal á sí mismo." },
+  { id: 242, category: "bondad", verseReference: "Tito 3:4", verseText: "Mas cuando se manifestó la bondad de Dios nuestro Salvador, y su amor para con los hombres." },
+  { id: 243, category: "bondad", verseReference: "Zacarías 7:9", verseText: "Juzgad juicio verdadero, y haced misericordia y piedad cada cual con su hermano." },
+
+  { id: 244, category: "salvacion", verseReference: "Juan 3:17", verseText: "Porque no envió Dios á su Hijo al mundo para que condene al mundo, sino para que el mundo sea salvo por él." },
+  { id: 245, category: "salvacion", verseReference: "Hechos 16:31", verseText: "Cree en el Señor Jesucristo, y serás salvo, tú y tu casa." },
+  { id: 246, category: "salvacion", verseReference: "Tito 3:5", verseText: "No por obras de justicia que nosotros hayamos hecho, sino según su misericordia nos salvó." },
+  { id: 247, category: "salvacion", verseReference: "Salmos 62:2", verseText: "Él solamente es mi roca y mi salvación; es mi refugio, no resbalaré mucho." },
+
+  { id: 248, category: "verdad", verseReference: "1 Juan 3:18", verseText: "Hijitos míos, no amemos de palabra ni de lengua, sino de hecho y en verdad." },
+  { id: 249, category: "verdad", verseReference: "Efesios 4:15", verseText: "Mas siguiendo la verdad en amor, crezcamos en todas cosas en aquel que es la cabeza, esto es, Cristo." },
+  { id: 250, category: "verdad", verseReference: "Proverbios 12:17", verseText: "El que habla verdad declara justicia; mas el testigo mentiroso, engaño." },
+  { id: 251, category: "verdad", verseReference: "Zacarías 8:16", verseText: "Estas son las cosas que habéis de hacer: Hablad verdad cada cual con su prójimo." },
+
+  { id: 252, category: "libertad", verseReference: "Gálatas 5:13", verseText: "Porque vosotros, hermanos, á libertad fuisteis llamados; solamente que no uséis la libertad como ocasión para la carne." },
+  { id: 253, category: "libertad", verseReference: "Romanos 6:18", verseText: "Mas siendo libertados del pecado, vinisteis á ser siervos de la justicia." },
+  { id: 254, category: "libertad", verseReference: "1 Pedro 2:16", verseText: "Como libres, pero no como los que tienen la libertad por cobertura de malicia, sino como siervos de Dios." },
+  { id: 255, category: "libertad", verseReference: "Romanos 8:21", verseText: "Que también la misma criatura será libertada de la servidumbre de corrupción á la libertad gloriosa de los hijos de Dios." },
+
+  { id: 256, category: "gozo", verseReference: "Salmos 118:24", verseText: "Este es el día que hizo Jehová; nos gozaremos y alegraremos en él." },
+  { id: 257, category: "gozo", verseReference: "Romanos 14:17", verseText: "Porque el reino de Dios no es comida ni bebida, sino justicia, paz y gozo por el Espíritu Santo." },
+  { id: 258, category: "gozo", verseReference: "Salmos 30:11", verseText: "Has cambiado mi lamento en baile; desataste mi cilicio, y me ceñiste de alegría." },
+  { id: 259, category: "gozo", verseReference: "Filipenses 1:4", verseText: "Siempre en todas mis oraciones rogando con gozo por todos vosotros." },
+
+  { id: 260, category: "compasion", verseReference: "Mateo 9:36", verseText: "Y viendo las gentes, tuvo compasión de ellas; porque estaban fatigadas y tendidas como ovejas que no tienen pastor." },
+  { id: 261, category: "compasion", verseReference: "Romanos 12:15", verseText: "Gozaos con los que se gozan; llorad con los que lloran." },
+  { id: 262, category: "compasion", verseReference: "1 Juan 3:17", verseText: "Pero el que tiene bienes de este mundo, y ve á su hermano tener necesidad, y le cierra su corazón, ¿cómo está el amor de Dios en él?" },
+  { id: 263, category: "compasion", verseReference: "Proverbios 19:17", verseText: "Al que da al pobre presta á Jehová; y el bien que ha hecho, Él se lo volverá á pagar." },
+
+  { id: 264, category: "redencion", verseReference: "1 Pedro 1:18", verseText: "Sabiendo que fuisteis rescatados de vuestra vana manera de vivir, no con cosas corruptibles, como oro ó plata." },
+  { id: 265, category: "redencion", verseReference: "Tito 2:14", verseText: "Que se dio á sí mismo por nosotros para redimirnos de toda iniquidad, y purificar para sí un pueblo propio, celoso de buenas obras." },
+  { id: 266, category: "redencion", verseReference: "Hebreos 9:12", verseText: "No por sangre de machos cabríos ni de becerros, sino por su propia sangre, entró una vez para siempre en el Lugar Santísimo, habiendo obtenido eterna redención." },
+  { id: 267, category: "redencion", verseReference: "Isaías 44:22", verseText: "Yo deshice como una nube tus rebeliones, y como niebla tus pecados: vuélvete á mí, porque yo te redimí." },
+
+  { id: 268, category: "santidad", verseReference: "2 Corintios 7:1", verseText: "Así que, amados, limpiémonos de toda contaminación de carne y de espíritu, perfeccionando la santidad en el temor de Dios." },
+  { id: 269, category: "santidad", verseReference: "Romanos 6:22", verseText: "Mas ahora libertados del pecado, y hechos siervos á Dios, tenéis por vuestro fruto la santificación, y por fin la vida eterna." },
+  { id: 270, category: "santidad", verseReference: "Levítico 19:2", verseText: "Santos seréis, porque yo soy santo, Jehová vuestro Dios." },
+  { id: 271, category: "santidad", verseReference: "Efesios 4:24", verseText: "Y vestíos del nuevo hombre, criado según Dios en la justicia y santidad de la verdad." },
+
+  { id: 272, category: "servicio", verseReference: "Mateo 20:26", verseText: "El que quisiere hacerse grande entre vosotros, sea vuestro servidor." },
+  { id: 273, category: "servicio", verseReference: "Romanos 12:11", verseText: "En solicitud no perezosos; en espíritu fervientes; sirviendo al Señor." },
+  { id: 274, category: "servicio", verseReference: "Colosenses 3:23", verseText: "Y todo lo que hagáis, hacedlo de corazón, como al Señor, y no á los hombres." },
+  { id: 275, category: "servicio", verseReference: "Lucas 22:26", verseText: "El mayor entre vosotros, sea como el más joven; y el que dirige, como el que sirve." },
+
+  { id: 276, category: "unidad", verseReference: "Filipenses 2:2", verseText: "Completad mi gozo, siendo del mismo sentir, con el mismo amor, unánimes, sintiendo una misma cosa." },
+  { id: 277, category: "unidad", verseReference: "1 Corintios 1:10", verseText: "Os ruego, hermanos, que todos habléis una misma cosa, y que no haya entre vosotros divisiones." },
+  { id: 278, category: "unidad", verseReference: "Efesios 4:4", verseText: "Un cuerpo, y un Espíritu, como fuisteis también llamados en una misma esperanza de vuestra vocación." },
+  { id: 279, category: "unidad", verseReference: "Romanos 12:16", verseText: "Unánimes entre vosotros; no altivos, sino condescendiendo con los humildes." },
+
+  { id: 280, category: "perdon_reconciliacion", verseReference: "Marcos 11:25", verseText: "Y cuando estuviereis orando, perdonad, si tenéis algo contra alguno; para que también vuestro Padre que está en los cielos os perdone vuestras ofensas." },
+  { id: 281, category: "perdon_reconciliacion", verseReference: "Lucas 17:3", verseText: "Si tu hermano pecare contra ti, repréndele; y si se arrepintiere, perdónale." },
+  { id: 282, category: "perdon_reconciliacion", verseReference: "Romanos 5:10", verseText: "Porque si cuando éramos enemigos, fuimos reconciliados con Dios por la muerte de su Hijo, mucho más, estando reconciliados, seremos salvos por su vida." },
+  { id: 283, category: "perdon_reconciliacion", verseReference: "Proverbios 17:9", verseText: "El que encubre la falta busca amor; mas el que la divulga, aparta al amigo." },
 ];
 
 const CATEGORIES_DEF = [
