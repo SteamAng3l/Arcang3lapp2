@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Caudex:ital,wght@0,400;0,700;1,400&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
 @plugin "@tailwindcss/typography";
@@ -103,8 +104,8 @@
   --chart-4: 0 62% 45%;
   --chart-5: 40 40% 93%;
 
-  --app-font-sans: Georgia, 'Times New Roman', serif;
-  --app-font-serif: Georgia, 'Times New Roman', serif;
+  --app-font-sans: 'Caudex', Georgia, serif;
+  --app-font-serif: 'Caudex', Georgia, serif;
   --app-font-mono: Menlo, monospace;
   --radius: 0.5rem; 
 
@@ -188,15 +189,19 @@
     background-repeat: no-repeat;
     background-attachment: fixed;
     line-height: 1.9;
-    font-family: Georgia, 'Times New Roman', serif;
+    font-family: 'Caudex', Georgia, serif;
     font-size: 1.15rem;
     font-weight: 700;
   }
   h1, h2, h3, h4, h5, h6 {
-    font-family: Georgia, 'Times New Roman', serif;
+    font-family: 'Caudex', Georgia, serif;
     line-height: 1.2;
-    font-weight: 800;
+    font-weight: 700;
     letter-spacing: 0.03em;
+    color: #D4AF37;
+  }
+  h1 {
+    -webkit-text-stroke: 1px #8B7500;
   }
   button, a, [role="button"] {
     min-height: 44px;
