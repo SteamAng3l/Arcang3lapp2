@@ -6,6 +6,7 @@ import { Layout } from "@/components/layout";
 import Home from "@/pages/home";
 import Categories from "@/pages/categories";
 import Favorites from "@/pages/favorites";
+import Buscar from "@/pages/buscar";
 
 function Router() {
   return (
@@ -13,6 +14,7 @@ function Router() {
       <Switch>
         <Route path="/" component={Home} />
         <Route path="/categorias" component={Categories} />
+        <Route path="/buscar" component={Buscar} />
         <Route path="/favoritos" component={Favorites} />
         <Route component={NotFound} />
       </Switch>

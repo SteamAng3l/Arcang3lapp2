@@ -1667,6 +1667,15 @@ export function getRandomVerseLocal(excludedIds: number[] = []): VerseResponse {
   };
 }
 
+export function getAllVerses(): VerseResponse[] {
+  return RAW_VERSES.map((v) => ({
+    verse_id: v.id,
+    verse_text: v.verseText,
+    verse_reference: v.verseReference,
+    category: v.category,
+  }));
+}
+
 export function getCategories(): CategoryInfo[] {
   return CATEGORIES_DEF.map((cat) => ({
     category: cat.name,

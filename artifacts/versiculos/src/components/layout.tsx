@@ -34,6 +34,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <nav className="flex justify-center gap-8 mt-8 flex-wrap" aria-label="Navegación principal">
           {navLink("/", "Inicio")}
           {navLink("/categorias", "Categorías")}
+          {navLink("/buscar", "Buscar")}
           {navLink("/favoritos", "Mis Favoritos")}
         </nav>
       </header>
