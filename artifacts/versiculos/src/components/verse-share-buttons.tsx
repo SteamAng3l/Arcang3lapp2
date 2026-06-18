@@ -9,9 +9,8 @@ interface Props {
   verse: VerseResponse;
 }
 
-/* WhatsApp brand green */
 const WA_CLS =
-  "bg-[#25D366] hover:bg-[#1ebe59] text-white border-[#1aad50] font-serif text-base rounded-full px-5 py-2 h-11 gap-2 flex items-center";
+  "bg-[#a9792b] hover:bg-[#8c6324] text-white border-[#8c6324] font-serif text-base rounded-full px-5 py-2 h-11 gap-2 flex items-center";
 /* Facebook brand blue */
 const FB_CLS =
   "bg-[#1877F2] hover:bg-[#1464d0] text-white border-[#1462c8] font-serif text-base rounded-full px-5 py-2 h-11 gap-2 flex items-center";
