@@ -1,4 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=UnifrakturCook&display=swap');
+@font-face {
+  font-family: 'Carolingia';
+  src: url('/carolingia.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
 @import "tailwindcss";
 @import "tw-animate-css";
 @plugin "@tailwindcss/typography";
@@ -104,8 +109,8 @@
   --chart-4: 0 62% 45%;
   --chart-5: 40 40% 93%;
 
-  --app-font-sans: 'UnifrakturCook', Georgia, serif;
-  --app-font-serif: 'UnifrakturCook', Georgia, serif;
+  --app-font-sans: 'Carolingia', serif;
+  --app-font-serif: 'Carolingia', serif;
   --app-font-mono: Menlo, monospace;
   --radius: 0.5rem; 
 
@@ -189,12 +194,12 @@
     background-repeat: no-repeat;
     background-attachment: fixed;
     line-height: 1.9;
-    font-family: 'UnifrakturCook', cursive;
+    font-family: 'Carolingia', serif;
     font-size: 1.15rem;
     font-weight: normal;
   }
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'UnifrakturCook', cursive;
+    font-family: 'Carolingia', serif;
     line-height: 1.2;
     font-weight: normal;
     letter-spacing: 0.03em;
@@ -219,17 +224,17 @@
     -webkit-backdrop-filter: blur(12px);
   }
   p, span, li {
-    font-family: 'UnifrakturCook', cursive;
+    font-family: 'Carolingia', serif;
     font-size: 1.1rem;
     font-weight: normal;
     text-shadow: 0px 0px 6px rgba(255, 255, 255, 0.95);
   }
   input, textarea {
-    font-family: 'UnifrakturCook', cursive;
+    font-family: 'Carolingia', serif;
     font-size: 1.1rem;
     font-weight: normal;
   }
   .verse-text {
-    font-family: 'UnifrakturCook', cursive;
+    font-family: 'Carolingia', serif;
   }
 }
