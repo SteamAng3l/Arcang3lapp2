@@ -59,7 +59,7 @@ export default function Home() {
       <section className="bg-card rounded-2xl p-7 md:p-10 shadow-sm border border-border/50">
         <form onSubmit={handleSubmit} className="space-y-7">
           <div className="space-y-3 text-center mb-6">
-            <h2 className="text-2xl md:text-3xl font-serif leading-snug text-[#8B7500]">
+            <h2 className="text-2xl md:text-3xl font-serif leading-snug text-[#a9792b]">
               Soy Arcángel, estoy aquí para ayudarte a encontrar paz en la Palabra.
             </h2>
             <p className="text-muted-foreground text-xl font-serif">
@@ -97,7 +97,7 @@ export default function Home() {
               variant="outline"
               onClick={handleRandom}
               disabled={isPending}
-              className="w-full sm:w-auto font-serif text-xl h-14 px-10 rounded-full bg-transparent border-primary/20 hover:bg-primary/5 hover:text-primary text-[#8B7500]"
+              className="w-full sm:w-auto font-serif text-xl h-14 px-10 rounded-full bg-transparent border-primary/20 hover:bg-primary/5 hover:text-primary text-[#a9792b]"
               data-testid="button-random-verse"
             >
               {isPending ? (

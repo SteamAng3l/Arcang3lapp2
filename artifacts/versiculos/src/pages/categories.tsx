@@ -31,7 +31,7 @@ export default function Categories() {
   return (
     <div className="w-full flex flex-col animate-in fade-in duration-700">
       <div className="text-center mb-10 space-y-3">
-        <h2 className="text-3xl font-serif text-[#8B7500]">Temas de Consuelo</h2>
+        <h2 className="text-3xl font-serif text-[#a9792b]">Temas de Consuelo</h2>
         <p className="text-muted-foreground font-serif text-xl leading-relaxed">
           Elige un tema y verás todos los versículos disponibles para esa necesidad.
         </p>
@@ -45,7 +45,7 @@ export default function Categories() {
             data-testid={`button-category-${cat.category}`}
           >
             <div className="flex justify-between items-center gap-3">
-              <h3 className="text-2xl font-serif group-hover:text-primary transition-colors text-[#8B7500]">
+              <h3 className="text-2xl font-serif group-hover:text-primary transition-colors text-[#a9792b]">
                 {cat.label}
               </h3>
               <span className="text-base font-medium text-muted-foreground bg-background px-4 py-1.5 rounded-full border border-border/50 whitespace-nowrap">
