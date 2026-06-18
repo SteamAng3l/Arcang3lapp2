@@ -45,7 +45,7 @@ export default function Categories() {
             data-testid={`button-category-${cat.category}`}
           >
             <div className="flex justify-between items-center gap-3">
-              <h3 className="text-2xl font-serif text-foreground group-hover:text-primary transition-colors">
+              <h3 className="text-2xl font-serif group-hover:text-primary transition-colors text-[#8B7500]">
                 {cat.label}
               </h3>
               <span className="text-base font-medium text-muted-foreground bg-background px-4 py-1.5 rounded-full border border-border/50 whitespace-nowrap">
