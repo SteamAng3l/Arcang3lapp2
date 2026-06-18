@@ -97,7 +97,7 @@ export default function Home() {
               variant="outline"
               onClick={handleRandom}
               disabled={isPending}
-              className="w-full sm:w-auto font-serif text-xl h-14 px-10 rounded-full bg-transparent border-primary/20 hover:bg-primary/5 hover:text-primary"
+              className="w-full sm:w-auto font-serif text-xl h-14 px-10 rounded-full bg-transparent border-primary/20 hover:bg-primary/5 hover:text-primary text-[#8B7500]"
               data-testid="button-random-verse"
             >
               {isPending ? (
