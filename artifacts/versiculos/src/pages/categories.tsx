@@ -31,12 +31,11 @@ export default function Categories() {
   return (
     <div className="w-full flex flex-col animate-in fade-in duration-700">
       <div className="text-center mb-10 space-y-3">
-        <h2 className="text-3xl font-serif text-foreground">Temas de Consuelo</h2>
+        <h2 className="text-3xl font-serif text-[#8B7500]">Temas de Consuelo</h2>
         <p className="text-muted-foreground font-serif text-xl leading-relaxed">
           Elige un tema y verás todos los versículos disponibles para esa necesidad.
         </p>
       </div>
-
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {CATEGORIES.map((cat) => (
           <button
@@ -56,7 +55,6 @@ export default function Categories() {
           </button>
         ))}
       </div>
-
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent className="max-w-2xl bg-background border-primary/20 sm:rounded-3xl p-0 overflow-hidden flex flex-col max-h-[85vh]">
           <DialogHeader className="px-8 pt-8 pb-4 border-b border-border/50">
