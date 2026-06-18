@@ -87,7 +87,7 @@
   --secondary-foreground: 24 33% 18%;
   
   --muted: 40 46% 85%;
-  --muted-foreground: 24 33% 40%;
+  --muted-foreground: 24 25% 58%;
   
   --accent: 30 52% 64%;
   --accent-foreground: 40 40% 96%;
@@ -192,7 +192,7 @@
     font-family: 'Manrope', sans-serif;
     font-size: 1.15rem;
     font-weight: normal;
-    color: #231b16;
+    color: #3d2b1a;
   }
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Cormorant Garamond', serif;
@@ -223,16 +223,16 @@
     font-family: 'Manrope', sans-serif;
     font-size: 1.1rem;
     font-weight: normal;
-    color: #231b16;
+    color: #5c4030;
   }
   input, textarea {
     font-family: 'Manrope', sans-serif;
     font-size: 1.1rem;
     font-weight: normal;
-    color: #231b16;
+    color: #5c4030;
   }
   .verse-text {
     font-family: 'Manrope', sans-serif;
-    color: #231b16;
+    color: #3d2b1a;
   }
 }
