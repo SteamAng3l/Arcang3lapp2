@@ -59,7 +59,7 @@ export default function Home() {
       <section className="bg-card rounded-2xl p-7 md:p-10 shadow-sm border border-border/50">
         <form onSubmit={handleSubmit} className="space-y-7">
           <div className="space-y-3 text-center mb-6">
-            <h2 className="text-2xl md:text-3xl font-serif text-foreground leading-snug">
+            <h2 className="text-2xl md:text-3xl font-serif leading-snug text-[#8B7500]">
               Soy Arcángel, estoy aquí para ayudarte a encontrar paz en la Palabra.
             </h2>
             <p className="text-muted-foreground text-xl font-serif">
@@ -110,7 +110,6 @@ export default function Home() {
           </div>
         </form>
       </section>
-
       {isPending && !activeVerse && (
         <div className="flex flex-col items-center justify-center p-12 space-y-6 animate-pulse">
           <Skeleton className="h-5 w-36 bg-primary/10 rounded-full" />
@@ -122,7 +121,6 @@ export default function Home() {
           </div>
         </div>
       )}
-
       {activeVerse && !isPending && (
         <div className="animate-in fade-in slide-in-from-bottom-4 duration-1000">
           <div className="text-center mb-8">
