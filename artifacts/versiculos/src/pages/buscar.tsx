@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef } from "react";
 import { Search } from "lucide-react";
 import { Heart, HeartOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -9,7 +9,21 @@ const ALL = getAllVerses();
 
 export default function Buscar() {
   const [q, setQ] = useState("");
+  const [listening, setListening] = useState(false);
+  const recRef = useRef<InstanceType<typeof window.SpeechRecognition> | null>(null);
   const { addFavorite, removeFavorite, isFavorite } = useFavorites();
+
+  const startMic = () => {
+    const SR = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    if (!SR) return;
+    const rec = new SR();
+    recRef.current = rec;
+    rec.lang = "es-ES";
+    rec.onstart = () => setListening(true);
+    rec.onresult = (e: any) => setQ(e.results[0][0].transcript);
+    rec.onend = () => setListening(false);
+    rec.start();
+  };
 
   const results = useMemo(() => {
     const t = q.trim().toLowerCase();
@@ -39,12 +53,20 @@ export default function Buscar() {
         <input
           autoFocus
           type="text"
+          id="search-input"
           value={q}
           onChange={(e) => setQ(e.target.value)}
           placeholder="Ej: Juan 3:16 · paz · no temas…"
           className="w-full pl-12 pr-4 py-3 rounded-2xl border border-border/50 bg-card font-serif text-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/40 focus:ring-1 focus:ring-primary/20"
         />
       </div>
+      <button
+        id="mic-button"
+        onClick={startMic}
+        className={`flex items-center gap-2 mx-auto px-5 py-2 rounded-full border font-serif text-base transition-colors ${listening ? "bg-primary text-primary-foreground border-primary animate-pulse" : "bg-card border-border/50 text-foreground hover:border-primary/40"}`}
+      >
+        🎤 {listening ? "Escuchando…" : "Buscar por voz"}
+      </button>
 
       {q.trim() && (
         <p className="text-muted-foreground font-serif text-base">
